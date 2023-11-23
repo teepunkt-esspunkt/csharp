@@ -16,8 +16,27 @@ namespace _2023_11_23
             Console.WriteLine(m1.getBMI());
             Console.WriteLine(m1.ToString());
             //Console.WriteLine(m1.getGewicht());
-            Console.Write(m1.Gewicht); //Getter
+            Console.WriteLine(m1.Gewicht); //Getter
             m1.Gewicht = 69;
+            Console.WriteLine(m1.Gewicht);
+
+
+
+            //DateTime neuGD = MenschIO.GdAusKonsole(); 
+            //Console.WriteLine(neuGD);
+
+            //double neuGewicht = MenschIO.GewichtAusKonsole();
+            //Console.WriteLine(neuGewicht);
+
+            //double neuGroesse = MenschIO.GroesseAusKonsole();
+            //Console.WriteLine(neuGroesse);
+
+            Mensch konsolenMensch = MenschIO.MenschAusKonsole();
+            Console.WriteLine(konsolenMensch);
+
+
+
+
         }
     }
 

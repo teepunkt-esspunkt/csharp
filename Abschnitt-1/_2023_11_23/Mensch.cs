@@ -105,104 +105,11 @@ namespace _2023_11_23
             //int ergebnis = heutigesJahr - geburtsDatum.Year;
 
             //this.alter = ergebnis;
-            return alter;
+            //return alter;
 
         }
 
-        //internal string BmiStand(double bmi)
-        //{
-        //    if(this.alter <= 24)
-        //    {
-        //        if(bmi < 19)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 19 && bmi <= 24)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else 
-        //        { 
-        //            return "Uebergewicht"; 
-        //        }
-        //    }
-        //    else if(this.alter >= 25 && this.alter <= 34) 
-        //    {
-        //        if (bmi < 20)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 20 && bmi <= 25)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else
-        //        {
-        //            return "Uebergewicht";
-        //        }
-        //    }
-        //    else if(this.alter >= 35 && this.alter <= 44)
-        //    {
-        //        if (bmi < 21)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 21 && bmi <= 26)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else
-        //        {
-        //            return "Uebergewicht";
-        //        }
-        //    }
-        //    else if (this.alter >= 45 && this.alter <= 54)
-        //    {
-        //        if (bmi < 22)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 22 && bmi <= 27)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else
-        //        {
-        //            return "Uebergewicht";
-        //        }
-        //    }
-        //    else if (this.alter >= 55 && this.alter <= 64)
-        //    {
-        //        if (bmi < 23)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 23 && bmi <= 28)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else
-        //        {
-        //            return "Uebergewicht";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (bmi < 24)
-        //        {
-        //            return "Untergewicht";
-        //        }
-        //        else if (bmi >= 24 && bmi <= 29)
-        //        {
-        //            return "Normalgewicht";
-        //        }
-        //        else
-        //        {
-        //            return "Uebergewicht";
-        //        }
-        //    }
-           
-        //}
+        
         public string werteBMIaus()
         {
             double bmi = getBMI();
@@ -232,15 +139,87 @@ namespace _2023_11_23
     {
         /** Definiere folgende Methoden
          * 
-         * 1. Eine Methode, die aus der Konsole einen Wert für Geburtsdatum einliest und das Datum Objekt zurückgibt
-         * 2. Eine Methode, die aus der Konsole einen Wert für Gewicht einliest und die Fliesskommazahl zurückgibt
-         * 3. Eine Methode, die aus der Konsole einen Wert für Groesse einliest und als ganze Zahl zurückgibt
-         * 4. Eine Methode, die aus der Konsole die Daten für ein Mensch Objekt einliest und ein Mensch Objekt zurückgibt
+         * 1. Eine Methode, die aus der Konsole einen Wert 
+         * für Geburtsdatum einliest und das Datum Objekt zurückgibt
+         * 2. Eine Methode, die aus der Konsole einen Wert 
+         * für Gewicht einliest und die Fliesskommazahl zurückgibt
+         * 3. Eine Methode, die aus der Konsole einen Wert 
+         * für Groesse einliest und als ganze Zahl zurückgibt
+         * 4. Eine Methode, die aus der Konsole die Daten für ein 
+         * Mensch Objekt einliest und ein Mensch Objekt zurückgibt
          * 
          * Achte auf Werte Überprüfungen
          *                  User erneut auffordern
          *                  oder Exception
          */
-                           
+        internal static DateTime GdAusKonsole()
+        {
+            DateTime geburtstag;
+
+            while (true)
+            {
+                Console.Write("Bitte Geburtsdatum eingeben im Format jjjj-mm-tt: ");
+                string eingabe = Console.ReadLine();
+                if(DateTime.TryParse(eingabe, out  geburtstag))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ungueltige Eingabe!");
+                }
+            }
+            return geburtstag;
+        }
+        internal static double GewichtAusKonsole()
+        {
+            double gewicht;
+            while (true)
+            {
+                Console.Write("Bitte Gewicht eingeben: ");
+                string eingabe = Console.ReadLine();
+                if(double.TryParse(eingabe, out gewicht)) // ??
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ungueltige Eingabe!");
+                }
+            }
+            return gewicht;
+        }
+        internal static int GroesseAusKonsole()
+        {
+            int groesse;
+            while (true)
+            {
+                Console.Write("Bitte Groesse in cm eingeben: ");
+                string eingabe = Console.ReadLine();
+                if (int.TryParse(eingabe, out groesse))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ungueltige Eingabe!");
+                }
+            }
+            return groesse;
+        }
+        internal static Mensch MenschAusKonsole()
+        {
+            Mensch mensch;
+          
+                int groesse = GroesseAusKonsole();
+                double gewicht = GewichtAusKonsole();
+                DateTime gdDatum = GdAusKonsole();
+
+                mensch = new Mensch(gdDatum, groesse, gewicht);
+            
+            return mensch;
+        }
+
+
     }
 }
