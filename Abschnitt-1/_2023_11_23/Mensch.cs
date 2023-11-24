@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,23 +70,23 @@ namespace _2023_11_23
         //}
         //int alter;
 
-        public Mensch(DateTime geburtsDatum, int groesse, double gewicht)
+        public Mensch(double gewicht, int groesse, DateTime geburtsDatum)
         {
             this.geburtsDatum = geburtsDatum;
             this.groesse = groesse;
             this.gewicht = gewicht;
-            getAlter();
+            GetAlter();
             
         }
 
-        public double getBMI()
+        public double GetBMI()
         {
             double groesse_meter = this.groesse / 100.0;
 
             //return this.gewicht/ (groesse_meter * groesse_meter);
             return this.gewicht / Math.Pow(groesse_meter, 2);
         }
-        public int getAlter()
+        public int GetAlter()
         {
             int alter = DateTime.Today.Year - this.geburtsDatum.Year;
             int monthToday = DateTime.Today.Month;
@@ -110,9 +111,9 @@ namespace _2023_11_23
         }
 
         
-        public string werteBMIaus()
+        public string WerteBMIaus()
         {
-            double bmi = getBMI();
+            double bmi = GetBMI();
             if (bmi < 16)
                 return "Kritisches Untergewicht";
             else if (bmi < 18.5)
@@ -127,11 +128,38 @@ namespace _2023_11_23
         public override string ToString()
         {
 
-            double bmi = getBMI();
+            double bmi = GetBMI();
             //string bmiString = BmiStand(bmi);
             //return "Alter: " + this.alter + ", Groesse: " + this.groesse + ", Gewicht: " + this.gewicht + ", BMI: " + bmi + ", Ihr BMI Zustand: " + bmiString;
             //return "Gewicht = " + this.gewicht + " Kg" + ", Groesse = " + this.groesse + " cm" + ", BMI " + this.getBMI() + ", Geburtsdatum " + this.geburtsDatum + ", Alter = " + this.getAlter();
-            return $"Gewicht = {gewicht} Kg, Groesse = {groesse} + cm, BMI = {getBMI()}, Geburtsdatum = {geburtsDatum}, Alter = {getAlter()}, Auswertung = {werteBMIaus()}";
+            return $"Gewicht = {gewicht} Kg, Groesse = {groesse} + cm, BMI = {GetBMI()}, Geburtsdatum = {geburtsDatum}, Alter = {GetAlter()}, Auswertung = {WerteBMIaus()}";
+        }
+        public string ToCSV()
+        {
+            return $"{gewicht},{groesse},{geburtsDatum}";
+        }
+
+        /**
+         * Die Methode soll aus einem String ein Mensch Objekt erzeugen 
+         * und das Objekt zurückgeben
+         * 
+         * Wenn die Gestaltung des Parameters menschstring 
+         * der Formel Gewicht,Groesse,Geburtsdatum nicht entspricht
+         * dann soll die Methode eine FormatException werfen, 
+         * sonst soll aus dem String das ensprechende Mensch Objekt
+         * erstellt werden
+         * 
+         * Hinweis: 
+         *      - Ausnahmebehandlung: try - catch - finally
+         *      - Ausnahme werfen: throw statement
+         *      - API schaut ihr Euch den Datentyp String an (.NET Doku)
+         */
+        public static Mensch Parse(string menschString)
+        {
+            /**
+             * aus einem string 3 elemente extrahieren ( mal gucken was string so kann)
+             * 
+             */
         }
 
     }
@@ -152,7 +180,23 @@ namespace _2023_11_23
          *                  User erneut auffordern
          *                  oder Exception
          */
-        internal static DateTime GdAusKonsole()
+        public static DateTime ReadBirthDayFromConsole()
+        {
+
+
+            Console.Write("Geburtsdatum: ");
+            try
+            {
+                return DateTime.Parse(Console.ReadLine());
+            }
+            catch (FormatException ex)
+            {
+                return ReadBirthDayFromConsole(); // Rekursion
+            }
+        }
+
+        
+        public static DateTime GdAusKonsole()
         {
             DateTime geburtstag;
 
@@ -170,6 +214,24 @@ namespace _2023_11_23
                 }
             }
             return geburtstag;
+        }
+
+        public static double ReadWeightFromConsole(double min, double max)
+        {
+            Console.Write($"Gewicht in kg [{min} ... {max}]: ");
+            try
+            {
+                double weight =  double.Parse(Console.ReadLine());
+                if (weight < min || weight > max)
+                {
+                    return ReadWeightFromConsole(min, max);
+                }
+                return weight;
+            } 
+            catch (FormatException ex)
+            {
+                return ReadWeightFromConsole(min, max);
+            }
         }
         internal static double GewichtAusKonsole()
         {
@@ -189,6 +251,25 @@ namespace _2023_11_23
             }
             return gewicht;
         }
+
+        public static int ReadHeightFromConsole(int min, int max)
+        {
+            Console.Write($"Groesse in cm [{min} ... {max}]: ");
+            int height = 0;
+            try
+            {
+                height = int.Parse(Console.ReadLine());
+            }
+            catch   (FormatException ex)
+            {
+                return ReadHeightFromConsole(min, max);
+            }
+            if (height < min || height > max)
+                return ReadHeightFromConsole(min, max);
+            return height;
+
+
+        }
         internal static int GroesseAusKonsole()
         {
             int groesse;
@@ -207,6 +288,11 @@ namespace _2023_11_23
             }
             return groesse;
         }
+
+        public static Mensch ReadMenschFromConsole(int minHeight, int maxHeight, double minWeight, double maxWeight)
+        {
+            return new Mensch(ReadWeightFromConsole(minWeight, maxWeight), ReadHeightFromConsole(minHeight, maxHeight), ReadBirthDayFromConsole());
+        }
         internal static Mensch MenschAusKonsole()
         {
             Mensch mensch;
@@ -215,7 +301,7 @@ namespace _2023_11_23
                 double gewicht = GewichtAusKonsole();
                 DateTime gdDatum = GdAusKonsole();
 
-                mensch = new Mensch(gdDatum, groesse, gewicht);
+                mensch = new Mensch(gewicht, groesse, gdDatum);
             
             return mensch;
         }

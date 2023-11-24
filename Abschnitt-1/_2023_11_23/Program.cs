@@ -12,8 +12,8 @@ namespace _2023_11_23
         static void Main(string[] args)
         {
             Console.WriteLine("!");
-            Mensch m1 = new Mensch(new DateTime(2008, 6, 1), 185, 71);
-            Console.WriteLine(m1.getBMI());
+            Mensch m1 = new Mensch(71, 185, new DateTime(2008, 6, 1));
+            Console.WriteLine(m1.GetBMI());
             Console.WriteLine(m1.ToString());
             //Console.WriteLine(m1.getGewicht());
             Console.WriteLine(m1.Gewicht); //Getter
@@ -31,12 +31,19 @@ namespace _2023_11_23
             //double neuGroesse = MenschIO.GroesseAusKonsole();
             //Console.WriteLine(neuGroesse);
 
-            Mensch konsolenMensch = MenschIO.MenschAusKonsole();
-            Console.WriteLine(konsolenMensch);
+            //Mensch konsolenMensch = MenschIO.MenschAusKonsole();
+            //Console.WriteLine(konsolenMensch);
 
 
+            Console.WriteLine("-----------");
 
+            //Console.WriteLine(MenschIO.ReadBirthDayFromConsole());
+            //Console.WriteLine($"Geburtsdatum = {MenschIO.ReadBirthDayFromConsole()}");
 
+            //Console.WriteLine($"Gewicht = {MenschIO.ReadWeightFromConsole(40, 360)}");
+            //Console.WriteLine($"Groesse = {MenschIO.ReadHeightFromConsole(10, 200)} cm");
+
+            Console.WriteLine($"Mensch = {MenschIO.ReadMenschFromConsole(10, 280, 40, 360).ToCSV()}");
         }
     }
 
