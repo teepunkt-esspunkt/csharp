@@ -43,7 +43,8 @@ namespace _2023_11_23
             //Console.WriteLine($"Gewicht = {MenschIO.ReadWeightFromConsole(40, 360)}");
             //Console.WriteLine($"Groesse = {MenschIO.ReadHeightFromConsole(10, 200)} cm");
 
-            Console.WriteLine($"Mensch = {MenschIO.ReadMenschFromConsole(10, 280, 40, 360).ToCSV()}");
+            //Console.WriteLine($"Mensch = {MenschIO.ReadMenschFromConsole(10, 280, 40, 360).ToCSV()}");
+            Console.WriteLine(Mensch.Parse());
         }
     }
 

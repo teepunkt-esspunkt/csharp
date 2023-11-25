@@ -154,12 +154,47 @@ namespace _2023_11_23
          *      - Ausnahme werfen: throw statement
          *      - API schaut ihr Euch den Datentyp String an (.NET Doku)
          */
-        public static Mensch Parse(string menschString)
+        public static Mensch Parse()
         {
             /**
              * aus einem string 3 elemente extrahieren ( mal gucken was string so kann)
              * 
              */
+            Console.WriteLine("Bitte menschString eingeben: ");
+            string menschString = Console.ReadLine();
+
+
+            if (menschString.Length >= 10)
+            {
+                double gewicht;
+                int alter;
+                DateTime geburtstag;
+                string[] werte = menschString.Split(',');
+
+                if (werte.Length == 3)
+                {
+                    try
+                    {
+                        gewicht = double.Parse(werte[0]);
+                        alter = int.Parse(werte[1]);
+                        geburtstag = DateTime.Parse(werte[2]);
+                    }
+                    catch(FormatException ex)
+                    {
+                        return Parse();
+                    }
+                }
+                else
+                {
+                    return Parse();
+
+                }
+                return new Mensch(gewicht, alter, geburtstag);
+            }
+            else 
+            { 
+                return Parse(); 
+            }
         }
 
     }
