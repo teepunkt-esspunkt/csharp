@@ -12,7 +12,23 @@ namespace _2023_11_27
         public static void TreppeBilden()
         {
             int eingabe = 0;
-            Console
+            try
+            {
+                eingabe = int.Parse(Console.ReadLine());
+                int zaehler = 1;
+                for(int i = 0; i < eingabe; i++) 
+                {
+                    Console.WriteLine("++");
+                    Console.WriteLine("| |");
+                    Console.Write("+");
+                    Console.Write("-");
+                }
+            }
+            catch(FormatException ex)
+            {
+                Console.WriteLine("Ungueltige Eingabe!");
+                TreppeBilden();
+            }
         }
     }
 }
