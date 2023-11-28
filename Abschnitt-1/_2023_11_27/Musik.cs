@@ -29,7 +29,7 @@ namespace _2023_11_27
                 }
                 else if(downloads > 5)
                 {
-                    for(int i = 6; i <= downloads; i++)
+                    for(int i = 5; i < downloads; i++)
                     {
                         kosten += 0.2;
                     }
@@ -40,7 +40,7 @@ namespace _2023_11_27
                 Console.WriteLine("Ungueltige Eingabe");
                 KostenBilden();
             }
-            Console.Write(kosten);
+            Console.Write($"Gebuehren =  {kosten:F2} EURO");
         }
     }
 

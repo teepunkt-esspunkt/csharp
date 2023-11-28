@@ -13,7 +13,11 @@ namespace _2023_11_27 // Note: actual namespace depends on the project name.
             //Spiegelzahlen.SpiegelzahlenBilden();
             //MaxDiv.MaxDivGo();
             //Musik.KostenBilden();
-            Aufgabe1.Guess2();
+            //Aufgabe1.Guess2();
+            //Musik.KostenBilden();
+            //Sternchen.SternchenBilden();
+            //SternchenPyramide.SternchenPyramideBilden();
+
 
         }
     }
