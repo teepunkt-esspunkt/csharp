@@ -17,7 +17,7 @@ namespace _2023_11_27 // Note: actual namespace depends on the project name.
             //Musik.KostenBilden();
             //Sternchen.SternchenBilden();
             //SternchenPyramide.SternchenPyramideBilden();
-
+            Treppe.TreppeBilden();
 
         }
     }

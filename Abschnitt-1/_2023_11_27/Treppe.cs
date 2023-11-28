@@ -18,10 +18,20 @@ namespace _2023_11_27
                 int zaehler = 1;
                 for(int i = 0; i < eingabe; i++) 
                 {
-                    Console.WriteLine("++");
+                    Console.Write("+");
+                    for(int j = 0; j <= i; j++)
+                    {
+                        Console.Write("-");
+                    }
+                    Console.Write("+");
+                    Console.WriteLine("");
                     Console.WriteLine("| |");
                     Console.Write("+");
-                    Console.Write("-");
+                    Console.Write("---");
+                    for(int j = 0; j <= i; j++)
+                    {
+                        Console.Write("--");
+                    }
                 }
             }
             catch(FormatException ex)
