@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace _2023_11_28
 {
-    internal class Rechteck
+    internal class Rechteck : Figur
     {
         private double breite;
         private double laenge;
-        private Punkt mittelpunkt;
+        //private Punkt mittelpunkt;
 
         public double Breite
         {
@@ -23,16 +23,16 @@ namespace _2023_11_28
             get { return this.laenge; }
             set { this.laenge = value; }
         }
-        public Punkt Mittelpunkt
-        {
-            get { return this.mittelpunkt; }
-            set { this.mittelpunkt = value; }
-        }
-        public Rechteck(double breite, double laenge, Punkt mittelpunkt)
+        //public Punkt Mittelpunkt
+        //{
+        //    get { return this.mittelpunkt; }
+        //    set { this.mittelpunkt = value; }
+        //}
+        public Rechteck(double breite, double laenge, Punkt mittelpunkt) : base(mittelpunkt)
         {
             this.breite = breite;
             this.laenge = laenge;
-            this.mittelpunkt = mittelpunkt;
+            //this.mittelpunkt = mittelpunkt;
         }
         public override string ToString() => $"{this.breite} : {this.laenge} : {this.mittelpunkt.ToString()}";
         public double Area() => this.breite * this.laenge;
