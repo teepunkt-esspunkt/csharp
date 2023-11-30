@@ -24,6 +24,10 @@ namespace _2023_11_29
             get { return preis; }
             set { preis = value; }  
         }
+        public String name
+        {
+            get { return this.name; }
+        }
 
     }
 
@@ -50,4 +54,17 @@ namespace _2023_11_29
             return sum;
         }
     }
+}
+
+
+/**
+ * public void bearbeiten(ladegerät ladegerät)
+ * {
+ * if(ladegerät.getLadestand() < 100 && ladegerät.getLadestand() > 20)
+ * {
+ *  ladegerät.setZustand(NormalLadend.getNormalLadend());
+ * }
+ * }
+ */
+   
 }
