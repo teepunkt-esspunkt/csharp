@@ -8,9 +8,6 @@ namespace _2023_11_29
 {
     internal class Quadrat : Rechteck
     {
-        public Quadrat(double s, Punkt center) : base(s, s, center)
-        {
-
-        }
+        public Quadrat(double s, Punkt center) : base(s, s, center){ }
     }
 }

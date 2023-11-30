@@ -9,25 +9,32 @@ namespace _2023_11_29
 {
     internal class Artikel
     {
-        private readonly string name; // UML: -name: String {final}
-        private double preis;       
+        private readonly String name;// UML: -name: String {final}
+        private double preis;
 
-        public Artikel(string name, double preis) // UML: +Artikel(name : String, preis : double)
+        //UML: +Artikel(name : String, preis : double)
+        public Artikel(string name, double preis)
         {
             this.name = name;
             this.preis = preis;
         }
+
         public double Preis
         {
             get { return preis; }
+            set { preis = value; }  
         }
+
     }
+
     internal class Warenkorb
     {
         private ArrayList artikels = new ArrayList();
-        public void ArtikelHinzufuegen(Artikel a, int stueckzahl) //UML: +ArtikelHinzufuege(a : Artikel, stueckzahl : int) : void
+
+        //UML: +ArtikelHinzufuegen(a : Artikel, steuckzahl : int) : void
+        public void ArtikelHinzufuegen(Artikel a, int stueckzahl)
         {
-            for(int i = 0; i < stueckzahl;i++)
+            for(int i = 0; i < stueckzahl; i++)
             {
                 artikels.Add(a);
             }
@@ -35,11 +42,12 @@ namespace _2023_11_29
         public double Gesamtwert()
         {
             double sum = 0;
-            foreach(Artikel a in  artikels)
+
+            foreach(Artikel a in artikels)
             {
                 sum += a.Preis;
-                return sum;
             }
+            return sum;
         }
     }
 }

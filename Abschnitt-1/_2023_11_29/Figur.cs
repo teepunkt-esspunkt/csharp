@@ -7,30 +7,26 @@ using System.Threading.Tasks;
 namespace _2023_11_29
 {
     /**
-     * Abstrakte Klassen können nicht instanziiert werden - new ....
-     * (base geht aber objekte kann man nicht erstellen)
+     * Abstrakte klassen können nicht instanziiert werden - new ...
      * Eine abstrakte Klasse darf abstrakte Methoden beinhalten
-     * 
-     * 
      */
-    internal abstract class Figur
+    internal abstract  class Figur
     {
         protected Punkt mittelpunkt;
 
         public Punkt Mittelpunkt
         {
-            get { return this.mittelpunkt; }
-            set {  this.mittelpunkt = value;}
+            get { return this.mittelpunkt;}
+            set { this.mittelpunkt = value; }
+        
         }
         public Figur(Punkt mittelpunkt)
         {
             this.mittelpunkt= mittelpunkt;
         }
-
         public override string ToString() => $"{this.mittelpunkt.ToString()}";
 
-        public abstract double Area();
+        public abstract double Area(); 
         public abstract double Perimeter();
-
     }
 }
