@@ -58,6 +58,10 @@ namespace _2023_12_04
         public abstract bool Auszahlen(double betrag);
         public bool ueberweisen(Konto empfaenger, double betrag)
         {
+            if(this.iban == empfaenger.iban)
+            {
+                return false;
+            }
             if (this.Auszahlen(betrag))
             {
                 empfaenger.Einzahlen(betrag);
