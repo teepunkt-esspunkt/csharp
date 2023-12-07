@@ -1,5 +1,4 @@
 ﻿namespace _2023_12_06
-
 {
     internal class Test
     {
@@ -8,7 +7,7 @@
             Console.WriteLine("Zaehler: ");
             string input = Console.ReadLine();
 
-            double x;
+            double x = 0;
             try // Guarded Region
             {
                 x = double.Parse(input);
@@ -40,7 +39,7 @@
                 y = 3;
             }
 
-
+            
             double q;
             try
             {
