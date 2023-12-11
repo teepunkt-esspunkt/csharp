@@ -5,6 +5,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/**
+Die Klasse Person soll noch mit einem weiteren Attribute versehen werden - geschlecht
+Definiere für die Darstellubng von Geschlechtern einen Aufzaehlungstyp - Geschlecht. Die Werte bzw. die Objekte die in Frage kommen
+sind Male und Female
+In der Klasse Person passe folgende Operationen an
+    1. Konstruktor:
+        Das Attribut Geschlecht soll auch initialisiert werden
+    2. Properties für geschlecht
+    3. werteBMIaus:
+        Bei der Bewertung soll das Geschlecht beruecksichtig werden
+        
+                Bewertung für Male
+        < 16                Kritisches Untergewicht
+        16 ... 18.5         Untergewicht
+        18.5 ... 25         Normalgewicht
+        25 ... 30           leichters uebergewicht
+        > 30                Uebergewicht
+
+                Bewertung für Female
+        < 16                Kritisches Untergewicht
+        16 ... 18.5         Untergewicht
+        18.5 ... 25         Normalgewicht
+        25 ... 30           leichters uebergewicht
+        > 30                Uebergewicht
+
+*/
 
 namespace _2023_11_23
 {
