@@ -4,7 +4,10 @@
     {
         static void Main(string[] args)
         {
+            bool laeuft = true;
+
             MenuAufruf();
+
 
 
         }
@@ -22,5 +25,11 @@
             Console.WriteLine("(09) Alle Konten unsortiert anzeigen");
             Console.WriteLine("(10) Beenden");
         }
+
+        //internal static void PrivatkundAnlegen()
+        //{
+
+        //}
+
     }
 }
