@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjektArbeit
@@ -22,32 +23,58 @@ namespace ProjektArbeit
 
         internal static void PrivatkundeAnlegen()
         {
+
+            string  pattern = @"^[A-Za-zÖÄÜöäü]{2,}(?:[-\s'][A-Za-zÖÄÜöäü]+)?$";
+            Regex regexName = new Regex(pattern);
+
             string vorname;
+            string nachname;
             while(true)
             { 
                 Console.Write("Bitte Vornamen eingeben: ");
-                string eingabe = Console.ReadLine();
-                if(eingabe.Length >= 2 && eingabe.All(char.IsLetter)) 
+                
+                try
                 {
-                    vorname = eingabe;
+                    bool istGueltig;
+                    string eingabe = Console.ReadLine();
+                    if (regexName.IsMatch(eingabe))
+                        vorname = eingabe;
                     break;
+                    
                 }
-                else
+                catch(ArgumentException ae)
                 {
-                    Console.WriteLine("Name darf nur aus Buchstaben bestehen, keine Umlaute oder Sonderzeichen, keine Leerzeichen und der Name muss mindestens 2 Zeichen lang sein")
+                    Console.WriteLine("Name darf nur aus alphabetischen Zeichen bestehen, und muss mindestens 2 Zeichen lang sein");
+                }
+            }
+            while (true)
+            {
+                Console.Write("Bitte Nachname eingeben: ");
+
+                try
+                {
+                    bool istGueltig;
+                    string eingabe = Console.ReadLine();
+                    if (regexName.IsMatch(eingabe))
+                        nachname = eingabe;
+                    break;
+
+                }
+                catch (ArgumentException ae)
+                {
+                    Console.WriteLine("Name darf nur aus alphabetischen Zeichen bestehen, und muss mindestens 2 Zeichen lang sein");
                 }
             }
 
-            Console.Write("Bitte Nachnamen eingeben: ");
-            string nachname = Console.ReadLine();
-            //Console.Write("Bitte Geburtsdatum im Format \"JJJJ.MM.TT\"eingeben: ");
-            //string geburtsdatum = Console.ReadLine();
-            Console.Write("Bitte das Jahr der Geburt eingeben: ");
-            string geburtsjahr = Console.ReadLine();
-            Console.Write("Bitte den Monat der Geburt eingeben: ");
-            string geburtsmonat = Console.ReadLine();
-            Console.Write("Bitte den Tag der Geburt eingeben: ");
-            string geburtstag = Console.ReadLine();
+
+            Console.Write("Bitte Geburtsdatum im Format \"JJJJ.MM.TT\"eingeben: ");
+            string geburtsdatum = Console.ReadLine();
+            //Console.Write("Bitte das Jahr der Geburt eingeben: ");
+            //string geburtsjahr = Console.ReadLine();
+            //Console.Write("Bitte den Monat der Geburt eingeben: ");
+            //string geburtsmonat = Console.ReadLine();
+            //Console.Write("Bitte den Tag der Geburt eingeben: ");
+            //string geburtstag = Console.ReadLine();
             Console.Write("Bitte Telefonnummer eingeben: ");
             string telefonnummer = Console.ReadLine();
             Console.Write("Bitte EMail eingeben: ");

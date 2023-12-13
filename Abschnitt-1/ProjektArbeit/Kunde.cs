@@ -33,7 +33,7 @@ namespace ProjektArbeit
             this.kundennummer = kundennummer++;
             this.telefonnummer = telefonnummer;
             this.email = email;
-            this.adresse = new Adresse(strasse, hsnr, plz, ort)
+            this.adresse = new Adresse(strasse, hsnr, plz, ort);
             this.konten = new List<Konto>(anzahlKonten);
             
         }
