@@ -1,40 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
+/**
+ * 
+ * Aufgabe:
+ *          -Die Klasse Person soll noch mit einem weiteren Attribut versehen werden - geschlecht.
+ *         
+ *         Definiere für die Darstellung von Geschlechtern einen Aufzählungstyp - Geschlecht. Die Werte bzw. die Objekte, die in Frage 
+ *         kommen sind: Male und Female. 
+ *         
+ *         In der Klasse Person, passe folgende Operatioenen an:
+ *         
+ *          1. Konstruktor:
+ *                          Das Attribut geschlecht soll auch initialisiert werden
+ *          2. Properties für geschlecht
+ *          3. werteBMIAus:
+ *                          -Bei der Bewertung soll das Geschlecht berücksichtigt werden.
+ *                          
+ *                         Die Bewertung für Male
+ *                          
+ *                           < 16       -> Kritisches Untergewicht
+ *                          
+ *                         16 ...  18.5 -> Untergewicht
+ *                          
+ *                         18.5 ... 25 -> Normal Gewicht
+ *                          
+ *                          25 ... 30 -> Leichtes Übergewicht
+ *                          
+ *                          > 30 -> Übergewicht
+ *                          
+ *                        Die Bewertung für Female
+ *                          
+ *                           < 15       -> Kritisches Untergewicht
+ *                          
+ *                         15 ...  17.5 -> Untergewicht
+ *                          
+ *                         17.5 ... 24 -> Normal Gewicht
+ *                          
+ *                          24 ... 29 -> Leichtes Übergewicht
+ *                          
+ *                          > 29 -> Übergewicht
+ */
+
 namespace _2023_12_11Aufgabe
 {
+    internal enum EGeschlecht
+    {
+        MALE = 1,
+        FEMALE = 2
+    }
 
-
-    /**
-Die Klasse Person soll noch mit einem weiteren Attribute versehen werden - geschlecht
-Definiere für die Darstellubng von Geschlechtern einen Aufzaehlungstyp - Geschlecht. Die Werte bzw. die Objekte die in Frage kommen
-sind Male und Female
-In der Klasse Person passe folgende Operationen an
-        1. Konstruktor:
-            Das Attribut Geschlecht soll auch initialisiert werden
-        2. Properties für geschlecht
-        3. werteBMIaus:
-            Bei der Bewertung soll das Geschlecht beruecksichtig werden
-            
-                    Bewertung für Male
-            < 16                Kritisches Untergewicht
-            16 ... 18.5         Untergewicht
-            18.5 ... 25         Normalgewicht
-            25 ... 30           leichters uebergewicht
-            > 30                Uebergewicht
-
-                    Bewertung für Female
-            < 16                Kritisches Untergewicht
-            16 ... 18.5         Untergewicht
-            18.5 ... 25         Normalgewicht
-            25 ... 30           leichters uebergewicht
-            > 30                Uebergewicht
-
-*/
-
+    internal enum BMIAuswertung
+    {
+        NONE = 0,
+        KRITISCHES_UNTERGEWICHT = 1,
+        UNTERGEWICHT = 2,
+        NORMALGEWICHT = 3,
+        LEICHTES_UEBERGEWICHT = 4,
+        UEBERGEWICHT = 5
+    }
     /**
      * Erfasse die Klasse Mensch für die BMI Berechnung und BMI Auswertung
      */
@@ -53,6 +82,10 @@ In der Klasse Person passe folgende Operationen an
         readonly EGeschlecht geschlecht;
 
         //Properties
+        public EGeschlecht Geschlecht { get { return geschlecht; } }
+
+
+
         public double Gewicht
         {
             get { return gewicht; }
@@ -66,13 +99,19 @@ In der Klasse Person passe folgende Operationen an
 
         public DateTime Geburtsdatum
         {
-            get { return geburtsdatum; }
+
+
+            get
+            {
+
+                return geburtsdatum;
+            }
+
 
         }
-        public EGeschlecht Geschlecht
-        {
-            get { return Geschlecht; }
-        }
+
+
+
 
 
         //public double getGewicht() { return gewicht; }
@@ -84,12 +123,12 @@ In der Klasse Person passe folgende Operationen an
         /**
          * Ein vollständig parameterisierter Konstruktor für die Initialisierung der Attribute
          */
-        public Mensch(double gewicht, int groesse, DateTime geburtsdatum, EGeschlecht x)
+        public Mensch(double gewicht, int groesse, DateTime geburtsdatum, EGeschlecht gesch)
         {
             this.gewicht = gewicht;
             this.groesse = groesse;
             this.geburtsdatum = geburtsdatum;
-            this.geschlecht = x;
+            this.geschlecht = gesch;
         }
         //Methoden
         /**
@@ -101,14 +140,14 @@ In der Klasse Person passe folgende Operationen an
          *              -Textuelle Darstellung vom Zustand des Objekts
          * 
          */
-        public double getBMI()
+        public double GetBMI()
         {
             double groesse_meter = this.groesse / 100.0;// 185 / 100.0 = 1.85
                                                         // return this.gewicht/ (groesse_meter * groesse_meter);
             return this.gewicht / Math.Pow(groesse_meter, 2);
         }
 
-        public int getAlter()
+        public int GetAlter()
         {
             int alter = DateTime.Today.Year - this.geburtsdatum.Year;
 
@@ -122,75 +161,73 @@ In der Klasse Person passe folgende Operationen an
             // etwas = (Boolean expression) ? exp1 : exp2;
             return (monthToday < monthGebDatum || monthToday == monthGebDatum && dayToday < dayGebDatum) ? --alter : alter;
 
-
         }
         /**
          * String Interpolation...
          */
         public override string ToString()
         {
-            return $"Gewicht = {gewicht} Kg, Groesse = {groesse} cm, BMI = {getBMI()}, Geburtsdatum = {geburtsdatum} und Alter = {getAlter()}, Auswertung = {werteBMIAus()}";
+            return $"Gewicht = {gewicht} Kg, Groesse = {groesse} cm, BMI = {GetBMI()}, Geburtsdatum = {geburtsdatum} und Alter = {GetAlter()}, Auswertung = {WerteBMIAus()}";
         }
-
-        public string werteBMIAus()
+        public string ToCSV()
         {
-            double bmi = getBMI();
+            return $"{gewicht},{groesse},{geburtsdatum}";
+        }
+        public BMIAuswertung WerteBMIAus()
+        {
+            double bmi = GetBMI();
+
             switch (this.geschlecht)
             {
                 case EGeschlecht.MALE:
                     if (bmi < 16)
-                        return "Kritisches Untergewicht";
+                        return BMIAuswertung.KRITISCHES_UNTERGEWICHT;
                     else if (bmi < 18.5)
-                        return "Untergewicht";
+                        return BMIAuswertung.UNTERGEWICHT;
                     else if (bmi < 25)
-                        return "Normalgewicht";
+                        return BMIAuswertung.NORMALGEWICHT;
                     else if (bmi < 30)
-                        return "Leichtes Übergewicht";
+                        return BMIAuswertung.LEICHTES_UEBERGEWICHT;
                     else
-                        return "Übergewicht";
+                        return BMIAuswertung.UEBERGEWICHT;
+
                 case EGeschlecht.FEMALE:
-
                     if (bmi < 15)
-                        return "Kritisches Untergewicht";
+                        return BMIAuswertung.KRITISCHES_UNTERGEWICHT;
                     else if (bmi < 17.5)
-                        return "Untergewicht";
+                        return BMIAuswertung.UNTERGEWICHT;
                     else if (bmi < 24)
-                        return "Normalgewicht";
+                        return BMIAuswertung.NORMALGEWICHT;
                     else if (bmi < 29)
-                        return "Leichtes Übergewicht";
+                        return BMIAuswertung.LEICHTES_UEBERGEWICHT;
                     else
-                        return "Übergewicht";
+                        return BMIAuswertung.UEBERGEWICHT;
+                default:
+                    return 0;
+            }
 
 
-            }
-            if (this.geschlecht == EGeschlecht.MALE)
-            {
-                if (bmi < 16)
-                    return "Kritisches Untergewicht";
-                else if (bmi < 18.5)
-                    return "Untergewicht";
-                else if (bmi < 25)
-                    return "Normalgewicht";
-                else if (bmi < 30)
-                    return "Leichtes Übergewicht";
-                else
-                    return "Übergewicht";
-            }
-            else
-            {
-                if (this.geschlecht == EGeschlecht.FEMALE)
-                {
 
-                }
-            }
+        }
+        /**
+         * Die Methode soll aus einem String ein Mensch Objekt erzeugen und das Objekt zurückgeben. 
+         * 
+         * Wenn die Gestaltung des Parameters menschstring der Format Gewicht,Groesse,Geburtsdatum nicht entspricht, dann soll die Methode
+         * eine FormatFormatException werfen, sonst soll dem String das entsprechende Mensch Objekt erzeugt und zurück gegeben werden.
+         * 
+         * 
+         * Hinweis:
+         *          - Ausnahmebehnadlung: try - catch - finally
+         *          - Ausnahme werfen: throw statement
+         *          - API: schaut Ihr Euch den Datentyp String an (.NET Doku)
+         */
+
+        public static Mensch Parse(string menschString)
+        {
+            //TODO
+            return null;
         }
 
-        
-    }
-    internal enum EGeschlecht
-    {
-        MALE,
-        FEMALE
     }
 
     internal class MenschIO
@@ -207,5 +244,58 @@ In der Klasse Person passe folgende Operationen an
          *                                  User erneut auffordern oder
          *                                  Exception...
         */
+        public static DateTime ReadBirthDayFromConsole()
+        {
+            Console.Write("Geburtsdatum: ");
+            try
+            {
+                return DateTime.Parse(Console.ReadLine());
+
+            }
+            catch (FormatException ex)
+            {
+                return ReadBirthDayFromConsole(); //Rekursion
+            }
+
+        }
+
+        public static double ReadWeightFromConsole(double min, double max)
+        {
+            Console.Write($"Gewicht in kg [{min} ... {max}]: ");
+            try
+            {
+                double weight = double.Parse(Console.ReadLine());
+                if (weight < min || weight > max)
+                    return ReadWeightFromConsole(min, max);
+                return weight;
+            }
+            catch (FormatException ex)
+            {
+                return ReadWeightFromConsole(min, max);
+            }
+
+        }
+        public static int ReadHeightFromConsole(int min, int max)
+        {
+            Console.Write($"Groesse in cm [{min} ... {max}]: ");
+            int height = 0;
+
+            try
+            {
+                height = int.Parse(Console.ReadLine());
+            }
+            catch (FormatException ex)
+            {
+                return ReadHeightFromConsole(min, max);
+            }
+
+            if (height < min || height > max)
+                return ReadHeightFromConsole(min, max);
+            return height;
+        }
+        public static Mensch ReadMenschFromConsole(double minWeight, double maxWeight, int minHeight, int maxHeight)
+        {
+            return new Mensch(ReadWeightFromConsole(minWeight, maxWeight), ReadHeightFromConsole(minHeight, maxHeight), ReadBirthDayFromConsole(), EGeschlecht.MALE);
+        }
     }
 }
