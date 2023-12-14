@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,12 +16,29 @@ namespace ProjektArbeit
         private string nachname;
         private DateTime geburtsdatum;
 
+        // Properties
+        public string Vorname
+        {
+            get { return vorname; }
+            set { vorname = value; }
+        }
+
+        public string Nachname
+        {
+            get { return nachname; }
+            set { nachname = value; }
+        }
+        public DateTime Geburtsdatum
+        {
+            get { return geburtsdatum; }
+            set { geburtsdatum = value; }
+        }
         // Constructor
         public Privatkunde(string vorname, string nachname, DateTime geburtsdatum, string telefonnummer, string email, Adresse adresse, int anzahlKonten) : base(telefonnummer, email, adresse, anzahlKonten)
         {
-            this.vorname = vorname;
-            this.nachname = nachname;
-            this.geburtsdatum = geburtsdatum;
+            Vorname = vorname;
+            Nachname = nachname;
+            Geburtsdatum = geburtsdatum;
 
         }
 
@@ -35,11 +53,13 @@ namespace ProjektArbeit
             Regex regexName = new Regex(pattern);
 
             // Attribute
-            string vorname;
-            string nachname;
+            //string vorname;
+            //string nachname;
+            //DateTime geburtsdatum;
+
 
             //Vorname (Mit Throw New ArgumentException, welcher Weg ist besser?)
-            while(true)
+            while (true)
             { 
                 Console.Write("Bitte Vornamen eingeben: ");
                 
@@ -49,7 +69,7 @@ namespace ProjektArbeit
                     string eingabe = Console.ReadLine();
                     if (regexName.IsMatch(eingabe))
                     { 
-                        vorname = eingabe;
+                        Vorname = eingabe;
                         break;
                     }
                     else
@@ -74,7 +94,7 @@ namespace ProjektArbeit
                     string eingabe = Console.ReadLine();
                     if (regexName.IsMatch(eingabe))
                     { 
-                        nachname = eingabe;
+                        Nachname = eingabe;
                         break;
                     } 
                         // ist das hier ueberhaupt noetig? zZz
@@ -90,13 +110,16 @@ namespace ProjektArbeit
             }
 
             // Geburtsdatum
-            //while (true)
-            //{
+            while (true)
+            {
                 Console.Write("Bitte Geburtsdatum im Format \"JJJJ.MM.TT\"eingeben: ");
-                string geburtsdatum = Console.ReadLine();
+                string eingabe = Console.ReadLine();
+                try
+                {
+                    Geburtsdatum = DateTime.Parse(eingabe);   
+                }
 
-
-            //}
+            }
 
             // TODO: +49 vorbelegen, nur zahlen und leerzeichen und 1 / oder -
             Console.Write("Bitte Telefonnummer eingeben: ");
