@@ -20,7 +20,7 @@
                     switch (menueWahl)
                     {
                         case 1:
-                            Console.WriteLine("Auswahl 1");
+                            Privatkunde.PrivatkundeAnlegen();
                             break;
                         case 2:
                             Console.WriteLine("Auwahl 2");
@@ -51,7 +51,7 @@
                             laeuft = false;
                             break;
                         default:
-                            Console.WriteLine("Ungueltige Auswahl! Bitte mit 0 - 9 waehlen");
+                            Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
                             break;
                     }
                 }catch (ArgumentException ae)
