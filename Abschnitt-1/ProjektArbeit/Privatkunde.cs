@@ -45,12 +45,15 @@ namespace ProjektArbeit
         // Methode zum Privatkunden Anlegen
         public static void PrivatkundeAnlegen()
         {
-            // Leerzeile damit es nicht so an dem vorangegangenen Text klebt
-            Console.WriteLine("");
+            //// Leerzeile damit es nicht so an dem vorangegangenen Text klebt
+            //Console.WriteLine("");
 
             //Regex Pattern fuer Vor- und Nachname
-            string pattern = @"^[A-Za-zÖÄÜöäü]{2,}(?:[-\s'][A-Za-zÖÄÜöäü]+)?$";
-            Regex regexName = new Regex(pattern);
+            string patternName = @"^[A-Za-zÖÄÜöäü]{2,}(?:[-\s'][A-Za-zÖÄÜöäü]+)?$";
+            Regex regexName = new Regex(patternName);
+            // Regex Pattern fuer Telefonnummer
+            string patternTele = @"^[\d\s]+[-/]?[\d\s]*$";
+            Regex regexTele = new Regex(patternTele);
 
             // Attribute
             // werden ein weiteres mal benötigt, da auf die Attribute der Klasse noch nicht zugegriffen werden kann bevor sie nicht initialisiert, instanziert wird
@@ -58,6 +61,7 @@ namespace ProjektArbeit
             string vorname;
             string nachname;
             DateTime geburtsdatum;
+            string telefonnummer;
 
 
             //Vorname (Mit Throw New ArgumentException, welcher Weg ist besser?)
@@ -67,7 +71,6 @@ namespace ProjektArbeit
 
                 try
                 {
-                    bool istGueltig;
                     string eingabe = Console.ReadLine();
                     if (regexName.IsMatch(eingabe))
                     {
@@ -92,7 +95,6 @@ namespace ProjektArbeit
 
                 try
                 {
-                    bool istGueltig;
                     string eingabe = Console.ReadLine();
                     if (regexName.IsMatch(eingabe))
                     {
@@ -114,23 +116,58 @@ namespace ProjektArbeit
             // Geburtsdatum
             while (true)
             {
-                Console.Write("Bitte Geburtsdatum im Format \"JJJJ.MM.TT\"eingeben: ");
-                string eingabe = Console.ReadLine();
+                Console.Write("Bitte Geburtsdatum im Format \"JJJJ.MM.TT\" oder \"TT.MM.JJJJ\" eingeben: ");
+                
                 try
                 {
-                    // uaeuaeuae
-                    geburtsdatum = DateTime.Parse(eingabe);
+                    DateTime eingabe = DateTime.Parse(Console.ReadLine());
+                   
+                    if (DateTime.Now >  eingabe)
+                    {
+                        if (MINDESTALTER > 0 && MINDESTALTER < (DateTime.Now.Year)
+                        {
+
+                        }
+                        geburtsdatum = eingabe;
+                        break;
+                    }
+
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                   
                 }
-                catch (ArgumentException)
+                catch (FormatException)
                 {
                     Console.WriteLine("Ungueltige Eingabe");
                 }
-
+                catch (ArgumentException)
+                {
+                    Console.Write("Datum darf nicht in der Zukunft liegen");
+                }
+            }
+            // +49 vorbelegt, nur zahlen und leerzeichen und ein Sonderzeichen / oder -
+            while (true)
+            {
+                Console.Write("Bitte Telefonnummer eingeben: (+49) ");
+                try
+                {
+                    string eingabe = Console.ReadLine();
+                    if(regexTele.IsMatch(eingabe))
+                    {
+                        telefonnummer = eingabe;
+                        break;
+                    }
+                    else { throw new ArgumentException(); }
+                    
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Ungueltige Eingabe. Nur Zahlen, Leerzeichen und maximal 1 / oder -");
+                }
             }
 
-            // TODO: +49 vorbelegen, nur zahlen und leerzeichen und 1 / oder -
-            Console.Write("Bitte Telefonnummer eingeben: ");
-            string telefonnummer = Console.ReadLine();
             // Heere we GooO
             Console.Write("Bitte EMail eingeben: ");
             string email = Console.ReadLine();

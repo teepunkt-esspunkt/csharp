@@ -35,6 +35,7 @@
             Console.WriteLine("(08) Alle Kunden sortiert nach aufsteigender Kundenummer anzeigen");
             Console.WriteLine("(09) Alle Konten unsortiert anzeigen");
             Console.WriteLine("(10) Beenden");
+            Console.WriteLine("");
         }
 
         // Auswahl treffen im Hauptmenu
