@@ -87,9 +87,9 @@
                         break;
                 }
             }
-            catch (ArgumentException ae)
+            catch (Exception ae)
             {
-                Console.WriteLine(ae.Message);
+                Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
             }
         }
 

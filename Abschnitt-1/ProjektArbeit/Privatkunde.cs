@@ -11,11 +11,14 @@ namespace ProjektArbeit
     // Privatkunden Klasse, Erbt von Kunde.
     internal class Privatkunde : Kunde
     {
+        
         // Attribute
         private string vorname;
         private string nachname;
         private DateTime geburtsdatum;
-
+        private string email;
+        // Mindestalter für Kontoerstellung
+        private static readonly int Mindestalter = 18;
         // Properties
         public string Vorname
         {
@@ -54,6 +57,9 @@ namespace ProjektArbeit
             // Regex Pattern fuer Telefonnummer
             string patternTele = @"^[\d\s]+[-/]?[\d\s]*$";
             Regex regexTele = new Regex(patternTele);
+            // Regex Pattern fuer EMail Adresse
+            string patternMail = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            Regex regexMail = new Regex(patternMail);
 
             // Attribute
             // werden ein weiteres mal benötigt, da auf die Attribute der Klasse noch nicht zugegriffen werden kann bevor sie nicht initialisiert, instanziert wird
@@ -62,6 +68,7 @@ namespace ProjektArbeit
             string nachname;
             DateTime geburtsdatum;
             string telefonnummer;
+            string email;
 
 
             //Vorname (Mit Throw New ArgumentException, welcher Weg ist besser?)
@@ -79,11 +86,11 @@ namespace ProjektArbeit
                     }
                     else
                     {
-                        throw new ArgumentException();
+                        throw new Exception();
                     }
 
                 }
-                catch (ArgumentException ae)
+                catch (Exception ae)
                 {
                     Console.WriteLine("Name darf nur aus alphabetischen Zeichen bestehen, und muss mindestens 2 Zeichen lang sein");
                 }
@@ -104,10 +111,10 @@ namespace ProjektArbeit
                     // ist das hier ueberhaupt noetig? zZz
                     //else
                     //{
-                    //    throw new ArgumentException();
+                    //    throw new Exception();
                     //}
                 }
-                catch (ArgumentException ae)
+                catch (Exception)
                 {
                     Console.WriteLine("Name darf nur aus alphabetischen Zeichen bestehen, und muss mindestens 2 Zeichen lang sein");
                 }
@@ -121,15 +128,30 @@ namespace ProjektArbeit
                 try
                 {
                     DateTime eingabe = DateTime.Parse(Console.ReadLine());
-                   
-                    if (DateTime.Now >  eingabe)
-                    {
-                        if (MINDESTALTER > 0 && MINDESTALTER < (DateTime.Now.Year)
-                        {
 
+                    
+                    if (DateTime.Now > eingabe)
+                    {
+                        int alter = DateTime.Now.Year - eingabe.Year;
+
+                        if (DateTime.Now < eingabe.AddYears(alter))
+                            alter--;
+                        try
+                        {
+                            if (alter >= Mindestalter)
+                            {
+
+                                geburtsdatum = eingabe;
+                                break;
+                            }
+                            else
+                            {
+                                throw new ArgumentException();
+                            }
+                        } catch (ArgumentException)
+                        {
+                            Console.WriteLine($"Mindestalter: {Mindestalter}");
                         }
-                        geburtsdatum = eingabe;
-                        break;
                     }
 
                     else
@@ -138,14 +160,15 @@ namespace ProjektArbeit
                     }
                    
                 }
-                catch (FormatException)
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Datum darf nicht in der Zukunft liegen");
+                }
+                catch (Exception)
                 {
                     Console.WriteLine("Ungueltige Eingabe");
                 }
-                catch (ArgumentException)
-                {
-                    Console.Write("Datum darf nicht in der Zukunft liegen");
-                }
+               
             }
             // +49 vorbelegt, nur zahlen und leerzeichen und ein Sonderzeichen / oder -
             while (true)
@@ -159,15 +182,45 @@ namespace ProjektArbeit
                         telefonnummer = eingabe;
                         break;
                     }
-                    else { throw new ArgumentException(); }
-                    
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+
                 }
                 catch (ArgumentException)
                 {
                     Console.WriteLine("Ungueltige Eingabe. Nur Zahlen, Leerzeichen und maximal 1 / oder -");
                 }
+                //catch (Exception)
+                //{
+                //    Console.WriteLine("Ungueltige Eingabe!")
+                //}
             }
 
+            while(true)
+            {
+                Console.Write("Bitte E-Mail Adresse eingeben: ");
+
+                try
+                {
+                    string eingabe = Console.ReadLine();
+                    if (regexMail.IsMatch(eingabe))
+                    {
+                        nachname = eingabe;
+                        break;
+                    }
+                    // ist das hier ueberhaupt noetig? zZz
+                    //else
+                    //{
+                    //    throw new Exception();
+                    //}
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Name darf nur aus alphabetischen Zeichen bestehen, und muss mindestens 2 Zeichen lang sein");
+                }
+            }
             // Heere we GooO
             Console.Write("Bitte EMail eingeben: ");
             string email = Console.ReadLine();
