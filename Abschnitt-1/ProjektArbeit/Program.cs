@@ -25,6 +25,7 @@
         // Anzeige der Auswahlmoeglichkeiten, Hauptmenu
         internal static void MenuAufruf()
         {
+            Console.WriteLine("");
             Console.WriteLine("(01) Privatkunde anlegen");
             Console.WriteLine("(02) Firmenkunde anlegen");
             Console.WriteLine("(03) Konto anlegen und Kundennummer zuordnen");

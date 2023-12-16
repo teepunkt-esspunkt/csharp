@@ -25,6 +25,11 @@ namespace ProjektArbeit
             this.ort = ort;
         }
 
+        public override string ToString()
+        {
+            return $"{strasse}, {hsnr}, {plz:D5}, {ort}";
+        }
+
     }
 
 }
