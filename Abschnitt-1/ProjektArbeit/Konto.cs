@@ -43,13 +43,13 @@ namespace ProjektArbeit
            
         }
 
-        public static Konto KontoAnlegen(Kunde kunde)
+        // Automatische Kontenerstellung bei aufruf von PrivatkundeAnlegen() oder FirmenkundeAnlegen
+        public static Konto KontoAnlegenAuto(Kunde kunde)
         {
-           
-            
             decimal kontostand = 0;
             double kontonummer = KontonummerGenerieren();
             string bic;
+            // Wenn Kunde keine BIC hat, Hauptzentrale verwenden (da es in er Kundenerstellung verwendet wird)
             if (kunde.Bank != null && kunde.Bank.Bic != null)
             {
                 bic = kunde.Bank.Bic;
@@ -61,6 +61,45 @@ namespace ProjektArbeit
             string iban = $"DE 89 {bic} {kontonummer}";
             return (new Konto(iban, kontostand, kontonummer));
         }
+
+        //public static Konto KontoAnlegen()
+        //{
+            
+        //    Console.Write("Bitte Startkapital eintragen: ");
+        //    try
+        //    {
+        //        decimal kontostand = decimal.Parse(Console.ReadLine());
+        //        if(kontostand < 0)
+        //        {
+        //            throw new ArgumentException("Startkapital darf nicht negativ sein.");
+        //        }
+        //    }
+        //    catch (ArgumentException ae)
+        //    {
+        //        Console.WriteLine(ae.Message);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("Bitte gueltigen Betrag eingeben");
+        //    }
+        //    double kontonummer = KontonummerGenerieren();
+        //    string bic;
+         
+        //    if (kunde.Bank != null && kunde.Bank.Bic != null)
+        //    {
+        //        bic = kunde.Bank.Bic;
+        //    }
+        //    else
+        //    {
+        //        bic = Bank.HauptZentrale.Bic;
+        //    }
+        //    string iban = $"DE 89 {bic} {kontonummer}";
+        //    return (new Konto(iban, kontostand, kontonummer));
+        //}
+
+
+
+
 
         public static double KontonummerGenerieren()
         {

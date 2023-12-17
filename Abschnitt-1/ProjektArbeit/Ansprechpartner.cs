@@ -29,5 +29,9 @@ namespace ProjektArbeit
             Nachname = nachname;
             Telefonnummer = telefonnummer;
         }
+        public override string ToString()
+        {
+            return $"{Vorname}, {Nachname}, {Telefonnummer}";
+        }
     }
 }

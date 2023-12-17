@@ -76,7 +76,13 @@ namespace ProjektArbeit
             // Rueckgabe des erstellen Firmenkunden
             Firmenkunde fk1 = new Firmenkunde(name, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, Bank.HauptZentrale, new Ansprechpartner(ansprechpartnerVorname, ansprechpartnerNachname, ansprechpartnerTelefonnummer));
 
+            Console.WriteLine(fk1.ToString());
             return fk1;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}, {base.Kundennummer}, {base.Telefonnummer}, {base.Email}, {base.Adresse}, {base.Konten.Count}, {Ansprechpartner}";
         }
     }
 }

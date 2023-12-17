@@ -63,14 +63,17 @@ namespace ProjektArbeit
             Konten = new List<Konto>();           
             for (int i = 0; i < anzahlKonten; i++)
             {
-                Konten.Add(Konto.KontoAnlegen(this));
+                Konten.Add(Konto.KontoAnlegenAuto(this));
             }
             // Wenn keine Zweigstelle eingegeben wurde soll der Hauptsitz genommen werden
             Bank = bank ?? Bank.HauptZentrale;
             // Kunde zur Liste der Bank hinzufuegen
             Bank.KundenHinzufuegen(this);
         }
-
+        public void KontoHinzufuegen(Konto konto)
+        {
+            Konten.Add(konto);
+        }
         //public override string ToString()
         //{
         //    return $"{Kundennummer}, {Telefonnummer}, {Email}, {Adresse}, {konten.Count}";

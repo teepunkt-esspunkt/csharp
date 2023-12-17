@@ -43,7 +43,7 @@
                         Privatkunde.PrivatkundeAnlegen();
                         break;
                     case 2:
-                        Console.WriteLine("Auwahl 2");
+                        Firmenkunde.FirmenkundeAnlegen();
                         break;
                     case 3:
                         Console.WriteLine("Auswahl 3");

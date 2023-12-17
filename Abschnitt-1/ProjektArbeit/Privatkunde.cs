@@ -88,7 +88,7 @@ namespace ProjektArbeit
             int anzahlKonten = IntPruefen("Bitte Anzahl der gewuenschten Konten eingeben: ", 1, 10, "Bitte zwischen 1 und 10 waehlen."); 
             // Rueckgabe des erstellten Privatkundenobjekts
             Privatkunde pk1 = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, Bank.HauptZentrale);
-            Bank.HauptZentrale.KundenHinzufuegen(pk1);
+            //Bank.HauptZentrale.KundenHinzufuegen(pk1);
             Console.WriteLine(pk1.ToString()); // DEBUG XXX
 
             return pk1;
