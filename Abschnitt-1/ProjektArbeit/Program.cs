@@ -4,22 +4,13 @@
     {
         static void Main(string[] args)
         {
-
-            
-
-
             while (true)
             {
                 // Anzeigen der Auswahlmoeglichkeiten
                 MenuAufruf();
                 //Auswahl treffen
                 MenuWahl();
-
-                
             }
-
-
-
         }
 
         // Anzeige der Auswahlmoeglichkeiten, Hauptmenu
@@ -38,13 +29,9 @@
             Console.WriteLine("(10) Beenden");
             Console.WriteLine("");
         }
-
         // Auswahl treffen im Hauptmenu
         internal static void MenuWahl()
         {
-            // als es noch im Main stand, wird das hier noch benoetigt oder brauche ich einen anderen weg??
-            bool laeuft = true;
-
             int menueWahl;
             try
             {
@@ -81,11 +68,9 @@
                         break;
                     case 0:
                         Console.WriteLine("Auwahl 0");
-                        laeuft = false;
                         break;
                     default:
-                        Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
-                        break;
+                        throw new Exception();
                 }
             }
             catch (Exception ae)
@@ -93,11 +78,5 @@
                 Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
             }
         }
-
-        //internal static void PrivatkundAnlegen()
-        //{
-
-        //}
-
     }
 }

@@ -16,6 +16,28 @@ namespace ProjektArbeit
         private int plz;
         private string ort;
 
+        // Properties
+        public string Strasse
+        {
+            get { return strasse; }
+            set { strasse = value; }
+        }
+        public string Hsnr
+        {
+            get { return hsnr; }
+            set { hsnr = value; }
+        }
+        public int Plz
+        {
+            get { return plz; }
+            set { plz = value; }
+        }
+        public string Ort
+        {
+            get { return ort; }
+            set { ort = value; }
+        }
+
         // Konstruktor
         public Adresse(string strasse, string hsnr, int plz, string ort)
         {
