@@ -9,6 +9,16 @@ namespace ProjektArbeit
     // Bank Klasse
     internal class Bank
     {
+        // Liste aller Banken, hier weitere Zweigstellen eintragen 
+        internal static IEnumerable<Bank> AlleBanken()
+        {
+            List<Bank> banken = new List<Bank>
+            {
+                Bank.HauptZentrale
+            };
+            return banken;
+        }
+
         // Attribute
         private string name;
         private string bic;
@@ -31,6 +41,11 @@ namespace ProjektArbeit
             get { return adresse; }
             set { adresse = value; }
         }
+        public List<Kunde> Kunden
+        {
+            get { return kunden; }
+            set { kunden = value; }
+        }
 
         // Hauptzentrale
         public static Bank HauptZentrale { get; } = new Bank("Hauptzentrale", "PAYMOREXX", "Wucherweg", "2b", 30457, "Maushausen");
@@ -43,10 +58,6 @@ namespace ProjektArbeit
             this.adresse = new Adresse(strasse, hsnr, plz, ort);
             this.kunden = new List<Kunde>();
         }
-        //public static Bank HauptZentraleErstellen()
-        //{
-        //    return new Bank("Hauptzentrale", "PAYMOREXX", "Wucherweg", "2b", 30457, "Maushausen");
-        //}
 
         public void KundenHinzufuegen(Kunde kunde)
         {

@@ -46,13 +46,13 @@
                         Firmenkunde.FirmenkundeAnlegen();
                         break;
                     case 3:
-                        Console.WriteLine("Auswahl 3");
+                        Konto.KontoAnlegen();
                         break;
                     case 4:
-                        Console.WriteLine("Auswahl 4");
+                        Kunde.KundenMitKontoAnzeigenAuswahl();
                         break;
                     case 5:
-                        Console.WriteLine("Auswahl 5");
+                        Kunde.KundenMitKontoAnzeigenAuswahl();
                         break;
                     case 6:
                         Console.WriteLine("Auswahl 6");

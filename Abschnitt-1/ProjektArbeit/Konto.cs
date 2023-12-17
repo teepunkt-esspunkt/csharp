@@ -43,10 +43,28 @@ namespace ProjektArbeit
            
         }
 
-        // Automatische Kontenerstellung bei aufruf von PrivatkundeAnlegen() oder FirmenkundeAnlegen
-        public static Konto KontoAnlegenAuto(Kunde kunde)
+        // Automatische Kontenerstellung bei Aufruf von PrivatkundeAnlegen oder FirmenkundeAnlegen.
+        public static Konto KontoAnlegen(Kunde kunde)
         {
             decimal kontostand = 0;
+            Console.Write("Bitte Startkapital eintragen: ");
+            try
+            {
+                kontostand = decimal.Parse(Console.ReadLine());
+                if (kontostand < 0)
+                {
+                    throw new ArgumentException("Startkapital darf nicht negativ sein.");
+                }
+            }
+            catch (ArgumentException ae)
+            {
+                Console.WriteLine(ae.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Bitte gueltigen Betrag eingeben");
+            }
+            // Kontonummer generieren
             double kontonummer = KontonummerGenerieren();
             string bic;
             // Wenn Kunde keine BIC hat, Hauptzentrale verwenden (da es in er Kundenerstellung verwendet wird)
@@ -58,52 +76,88 @@ namespace ProjektArbeit
             {
                 bic = Bank.HauptZentrale.Bic;
             }
+            // iban generieren
             string iban = $"DE 89 {bic} {kontonummer}";
-            return (new Konto(iban, kontostand, kontonummer));
+            // 
+            Konto konto = new Konto(iban, kontostand, kontonummer);
+            // zur Kontenliste des Kunden hinzufuegen
+            kunde.Konten.Add(konto);
+            return konto;
         }
+        // Ueberladene Methode ohne Parameter fuer die Auswahl aus dem Menu
+        public static Konto KontoAnlegen()
+        {
+            Kunde kunde;
+            int kundennummer = 0;
+            Console.Write("Bitte Kundennummer eingeben: ");
 
-        //public static Konto KontoAnlegen()
+            try
+            {
+                kundennummer = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Bitte gueltige Kundennummer eingeben.");
+            }
+            kunde = Kunde.KundennummerSuche(kundennummer);
+
+            if (kunde != null)
+            {
+                decimal kontostand = 0;
+                Console.Write("Bitte Startkapital eintragen: ");
+                try
+                {
+                    kontostand = decimal.Parse(Console.ReadLine());
+                    if (kontostand < 0)
+                    {
+                        throw new ArgumentException("Startkapital darf nicht negativ sein.");
+                    }
+                }
+                catch (ArgumentException ae)
+                {
+                    Console.WriteLine(ae.Message);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Bitte gueltigen Betrag eingeben");
+                }
+
+                double kontonummer = KontonummerGenerieren();
+                string bic;
+                bic = kunde.Bank.Bic;
+
+
+                string iban = $"DE 89 {bic} {kontonummer}";
+                return (new Konto(iban, kontostand, kontonummer));
+            }
+            else
+            {
+                return null;
+            }
+        }
+        //public static Kunde KundennummerSuche(int kundennummer)
         //{
-            
-        //    Console.Write("Bitte Startkapital eintragen: ");
-        //    try
+        //    foreach (var bank in Bank.AlleBanken())
         //    {
-        //        decimal kontostand = decimal.Parse(Console.ReadLine());
-        //        if(kontostand < 0)
+        //        Kunde treffer = bank.Kunden.FirstOrDefault(k => k.Kundennummer == kundennummer);
+        //        if(treffer != null)
         //        {
-        //            throw new ArgumentException("Startkapital darf nicht negativ sein.");
+        //            return treffer;
         //        }
         //    }
-        //    catch (ArgumentException ae)
-        //    {
-        //        Console.WriteLine(ae.Message);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Bitte gueltigen Betrag eingeben");
-        //    }
-        //    double kontonummer = KontonummerGenerieren();
-        //    string bic;
-         
-        //    if (kunde.Bank != null && kunde.Bank.Bic != null)
-        //    {
-        //        bic = kunde.Bank.Bic;
-        //    }
-        //    else
-        //    {
-        //        bic = Bank.HauptZentrale.Bic;
-        //    }
-        //    string iban = $"DE 89 {bic} {kontonummer}";
-        //    return (new Konto(iban, kontostand, kontonummer));
+        //    Console.WriteLine("Kunde nicht gefunden.");
+        //    return null;
         //}
-
-
-
 
 
         public static double KontonummerGenerieren()
         {
             return (zufall.NextDouble() * (9999999999 - 1000000000) + 1000000000);
+        }
+
+        public override string ToString()
+        {
+            return $"{iban}, {kontostand}";
         }
 
     }

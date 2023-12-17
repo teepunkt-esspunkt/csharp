@@ -13,6 +13,7 @@ namespace ProjektArbeit
         // Attribute
         private readonly int maxKonten = 10;
         private int kundennummer = 0;
+        private static int neueKundennummer = 1;
         private string telefonnummer;
         private string email;
         private Adresse adresse;
@@ -55,7 +56,7 @@ namespace ProjektArbeit
         // Konstruktor mit Uebergabe vorhandener Adresse
         public Kunde(string telefonnummer, string email, Adresse adresse, int anzahlKonten, Bank bank = null)
         {
-            this.kundennummer = ++kundennummer;
+            this.kundennummer = neueKundennummer++;
             Telefonnummer = telefonnummer;
             Email = email;
             Adresse = adresse;
@@ -63,21 +64,83 @@ namespace ProjektArbeit
             Konten = new List<Konto>();           
             for (int i = 0; i < anzahlKonten; i++)
             {
-                Konten.Add(Konto.KontoAnlegenAuto(this));
+                Konto.KontoAnlegen(this);
             }
             // Wenn keine Zweigstelle eingegeben wurde soll der Hauptsitz genommen werden
             Bank = bank ?? Bank.HauptZentrale;
             // Kunde zur Liste der Bank hinzufuegen
-            Bank.KundenHinzufuegen(this);
+            Bank.Kunden.Add(this);
         }
-        public void KontoHinzufuegen(Konto konto)
+
+        public static void KundenMitKontoAnzeigenAuswahl()
         {
-            Konten.Add(konto);
+           
+            Console.Write("Bitte Namen oder Kundennummer eingeben: ");
+            string eingabe = Console.ReadLine();
+            if(int.TryParse(eingabe, out int kundennummer))
+            {
+                KundenMitKontoAnzeigen(kundennummer);
+            }
+            else if(!string.IsNullOrEmpty(eingabe))
+            {
+                KundenMitKontoAnzeigen(eingabe);
+            }
+           else
+            {
+                Console.WriteLine("Ungueltige Eingabe.");
+            }
+            
         }
-        //public override string ToString()
-        //{
-        //    return $"{Kundennummer}, {Telefonnummer}, {Email}, {Adresse}, {konten.Count}";
-        //}
+        public static void KundenMitKontoAnzeigen(int kundennummer)
+        {
+            Kunde kunde = KundennummerSuche(kundennummer);
+            if (kunde != null)
+            {
+                kunde.Konten.ToString();
+            }
+            else
+            {
+                Console.WriteLine("Kunde nicht gefunden.");
+            }
+        }
+        public static void KundenMitKontoAnzeigen(string name)
+        {
+            Kunde kunde = KundenNamenSuche(name);
+            if(kunde != null)
+            {
+                kunde.Konten.ToString();
+            }
+            else
+            {
+                Console.WriteLine("Kunde nicht gefunden");
+            }
+        }
+        public static Kunde KundenNamenSuche(string name)
+        {
+            foreach (var bank in Bank.AlleBanken())
+            {
+                Kunde treffer = bank.Kunden.FirstOrDefault(k => k.Name == name);
+                if (treffer != null)
+                {
+                    return treffer;
+                }
+            }
+            return null;
+        }
+        public static Kunde KundennummerSuche(int kundennummer)
+        {
+            foreach (var bank in Bank.AlleBanken())
+            {
+                Kunde treffer = bank.Kunden.FirstOrDefault(k => k.Kundennummer == kundennummer);
+                if (treffer != null)
+                {
+                    return treffer;
+                }
+            }
+            Console.WriteLine("Kunde nicht gefunden.");
+            return null;
+        }
+        
         // Methode fuer Ueberpruefugen (ausser fuer Geburtstag, PLZ, und Anzahl der Konten)
         public static string Pruefen(Regex regex, string aufforderung, string fehlermeldung)
         {
