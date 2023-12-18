@@ -208,16 +208,34 @@ namespace ProjektArbeit
         }
         public static void EinzahlenAuswahl()
         {
-            decimal betrag = 0;
-            string beschreibung = "";
             try
             {
                 Konto einzuzahlendesKonto = IbanSuche();
-                betrag = decimal.Parse(Console.ReadLine());
-                beschreibung = Console.ReadLine();
-                einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
+
+                if (einzuzahlendesKonto != null)
+                {
+                    decimal betrag;
+                    string beschreibung;
+
+                    Console.WriteLine("Betrag eingeben: ");
+                    if (decimal.TryParse(Console.ReadLine(), out betrag) && betrag > 0)
+                    {
+                        Console.Write("Beschreibung eingeben: ");
+                        beschreibung = Console.ReadLine();
+
+                        einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ungueltiger Betrag.");
+                    }
+                }
+                else 
+                { 
+                    Console.WriteLine("Konto nicht gefunden"); 
+                }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 Console.WriteLine("Fehler aufgetreten");
             }

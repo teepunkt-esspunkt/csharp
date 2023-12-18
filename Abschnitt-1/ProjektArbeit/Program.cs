@@ -83,7 +83,7 @@
                         Konto.AlleKonten();
                         break;
                     case 10:
-                        Konto.AlleKonten();
+                        Konto.EinzahlenAuswahl();
                         break;
                     case 11:
                         Konto.EinzahlenAuswahl();
