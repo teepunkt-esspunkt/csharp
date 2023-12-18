@@ -52,6 +52,11 @@ namespace ProjektArbeit
             get { return bank; }
             set { bank = value; }
         }
+        public int MaxKonten
+        {
+            get { return maxKonten; }
+        }
+        
 
         // Konstruktor mit Uebergabe vorhandener Adresse
         public Kunde(string telefonnummer, string email, Adresse adresse, int anzahlKonten, Bank bank = null)
@@ -87,46 +92,28 @@ namespace ProjektArbeit
             }
            else
             {
-                Console.WriteLine("Ungueltige Eingabe.");
+                Console.WriteLine("Ungueltige Eingaber.");
             }
             
         }
         public static void KundenMitKontoAnzeigen(int kundennummer)
         {
             Kunde kunde = KundennummerSuche(kundennummer);
-            if (kunde != null)
+            if (kunde != null && kunde.Konten.Any())
             {
-                kunde.Konten.ToString();
+                
+                Console.WriteLine($"Kunde mit der Kundennummer {kunde.Kundennummer} hat folgende Konten:");
+                foreach (var konto in kunde.Konten)
+                {
+                    Console.WriteLine(konto.ToStringPlus());
+                }
             }
             else
             {
                 Console.WriteLine("Kunde nicht gefunden.");
             }
         }
-        public static void KundenMitKontoAnzeigen(string name)
-        {
-            Kunde kunde = KundenNamenSuche(name);
-            if(kunde != null)
-            {
-                kunde.Konten.ToString();
-            }
-            else
-            {
-                Console.WriteLine("Kunde nicht gefunden");
-            }
-        }
-        public static Kunde KundenNamenSuche(string name)
-        {
-            foreach (var bank in Bank.AlleBanken())
-            {
-                Kunde treffer = bank.Kunden.FirstOrDefault(k => k.Name == name);
-                if (treffer != null)
-                {
-                    return treffer;
-                }
-            }
-            return null;
-        }
+        // Kundennummer Suche fuer das Hinzufuegen weiterer Konten zu einem bereits existierenden Kunden
         public static Kunde KundennummerSuche(int kundennummer)
         {
             foreach (var bank in Bank.AlleBanken())
@@ -137,10 +124,144 @@ namespace ProjektArbeit
                     return treffer;
                 }
             }
-            Console.WriteLine("Kunde nicht gefunden.");
+            
             return null;
         }
-        
+        public static void KundenMitKontoAnzeigen(string name)
+        {
+            List<Kunde> kundenListe = KundenNamenSuche(name);
+            if(kundenListe.Count > 0)
+            {
+                foreach (var kunde in kundenListe)
+                {
+                    Console.WriteLine($"Kunde mit der Kundennummer {kunde.Kundennummer} hat folgende Konten:");
+                    foreach (var konto in kunde.Konten)
+                    {
+                        Console.WriteLine(konto);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Kunde nicht gefunden oder keine Konten.");
+            }
+        }
+
+        public static List<Kunde> KundenNamenSuche(string name)
+        {
+            List<Kunde> trefferKunden = new List<Kunde>();
+
+            foreach (var bank in Bank.AlleBanken())
+            {
+                // Search in Privatkunden
+                var privatkundenTreffer = bank.Kunden
+                    .OfType<Privatkunde>()
+                    .Where(k =>
+                        k.Vorname.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                        k.Nachname.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+                trefferKunden.AddRange(privatkundenTreffer);
+
+                // Search in Firmenkunden
+                var firmenkundenTreffer = bank.Kunden
+                    .OfType<Firmenkunde>()
+                    .Where(k =>
+                        k.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+                trefferKunden.AddRange(firmenkundenTreffer);
+            }
+
+            return trefferKunden;
+        }
+        public static void AlleKundenAnzeigen()
+        {
+   
+            foreach (var bank in Bank.AlleBanken())
+            {
+                foreach (var kunde in bank.Kunden)
+                {
+                    Console.WriteLine(kunde.ToStringPlus());
+                }
+            }
+
+            
+        }
+        public static void AlleKundenAnzeigenSortieren()
+        {
+            List<Kunde> alleKunden = new List<Kunde>();
+            int auswahl = 0;
+            foreach (var bank in Bank.AlleBanken())
+            {
+                alleKunden.AddRange(bank.Kunden);
+            }
+            Console.WriteLine("Bitte Sortierung Auswaehlen. 1 fuer Kundennummer, 2 fuer Telefonnummer...");
+
+            try
+            {
+                auswahl = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ungueltige Auswahl");
+            }
+            switch (auswahl)
+            {
+                case 1:
+                    alleKunden = alleKunden.OrderBy(k => k.Kundennummer).ToList();
+                    break;
+                case 2:
+                    alleKunden = alleKunden.OrderBy(k => k.Telefonnummer).ToList();
+                    break;
+                default:
+                    Console.WriteLine("Ungueltige Auswahl");
+                    alleKunden = alleKunden.OrderBy(k => k.Kundennummer).ToList();
+                    break;
+            }            
+            foreach (var kunde in alleKunden)
+            {
+                Console.WriteLine(kunde.ToStringPlus());
+            }
+        }
+        //public static void KundenMitKontoAnzeigen(string name)
+        //{
+        //    Kunde kunde = KundenNamenSuche(name);
+        //    if (kunde != null && kunde.Konten.Any())
+        //    {
+        //        Console.WriteLine($"Kunde mit der Kundennummer {kunde.Kundennummer} hat folgende Konten:");
+        //        foreach (var konto in kunde.Konten)
+        //        {
+        //            Console.WriteLine(konto);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Kunde nicht gefunden oder keine Konten.");
+        //    }
+        //}
+        //public static Kunde KundenNamenSuche(string name)
+        //{
+        //    List<Kunde> trefferKunden = new List<Kunde>();
+        //    foreach (var bank in Bank.AlleBanken())
+        //    {
+        //        Kunde trefferPrivatkunde = bank.Kunden.OfType<Privatkunde>().FirstOrDefault(k =>
+        //    k.Vorname.Equals(name, StringComparison.OrdinalIgnoreCase) || k.Nachname.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+        //        if(trefferPrivatkunde != null)
+        //        {
+        //            return trefferPrivatkunde;
+        //        }
+
+        //        Kunde trefferFirmenkunde = bank.Kunden.OfType<Firmenkunde>().FirstOrDefault(k =>
+        //    k.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+
+        //        if(trefferFirmenkunde != null)
+        //        {
+        //            return trefferFirmenkunde;
+        //        }
+
+        //    }
+        //    return null;
+        //}
         // Methode fuer Ueberpruefugen (ausser fuer Geburtstag, PLZ, und Anzahl der Konten)
         public static string Pruefen(Regex regex, string aufforderung, string fehlermeldung)
         {
@@ -189,6 +310,11 @@ namespace ProjektArbeit
                     Console.WriteLine(fehlermeldung);
                 }
             }
+        }
+
+        public virtual string ToStringPlus()
+        {
+            return "";
         }
     }
 }

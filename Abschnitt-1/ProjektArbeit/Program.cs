@@ -55,13 +55,13 @@
                         Kunde.KundenMitKontoAnzeigenAuswahl();
                         break;
                     case 6:
-                        Console.WriteLine("Auswahl 6");
+                        Konto.IbanSuche();
                         break;
                     case 7:
-                        Console.WriteLine("Auwahl 7");
+                        Kunde.AlleKundenAnzeigen();
                         break;
                     case 8:
-                        Console.WriteLine("Auswahl 8");
+                        Kunde.AlleKundenAnzeigen();
                         break;
                     case 9:
                         Console.WriteLine("Auswahl 9");
@@ -73,7 +73,7 @@
                         throw new Exception();
                 }
             }
-            catch (Exception ae)
+            catch (Exception)
             {
                 Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
             }

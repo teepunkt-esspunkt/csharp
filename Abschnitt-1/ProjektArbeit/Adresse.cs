@@ -51,6 +51,10 @@ namespace ProjektArbeit
         {
             return $"{strasse}, {hsnr}, {plz:D5}, {ort}";
         }
+        public string ToStringPlus()
+        {
+            return $"Strasse: {strasse}, Hausnummer: {hsnr}, Postleitzahl: {plz:D5}, Ort: {ort}";
+        }
 
     }
 

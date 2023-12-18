@@ -89,7 +89,7 @@ namespace ProjektArbeit
             // Rueckgabe des erstellten Privatkundenobjekts
             Privatkunde pk1 = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, Bank.HauptZentrale);
             //Bank.HauptZentrale.KundenHinzufuegen(pk1);
-            Console.WriteLine(pk1.ToString()); // DEBUG XXX
+            Console.WriteLine(pk1.ToStringPlus()); // DEBUG XXX
 
             return pk1;
             //return (new Privatkunde(vorname, nachname, gerbutsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten));
@@ -146,6 +146,10 @@ namespace ProjektArbeit
         public override string ToString()
         {
             return $"{Vorname}, {Nachname}, {Geburtsdatum}, {base.Kundennummer}, {base.Telefonnummer}, {base.Email}, {base.Adresse}, {base.Konten.Count}";
+        }
+        public override string ToStringPlus()
+        {
+            return $"Kundennummer: {base.Kundennummer}, Vorname: {Vorname}, Nachname: {Nachname}, Geburtsdatum: {Geburtsdatum.ToString("yyyy.MM.dd")}, Telefonnummer: {base.Telefonnummer}, E-Mail: {base.Email}, {base.Adresse.ToStringPlus()}, Kontenanzahl: {base.Konten.Count}";
         }
     }
   
