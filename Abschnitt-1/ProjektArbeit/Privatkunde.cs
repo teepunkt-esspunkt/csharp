@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjektArbeit
 {
-    // Privatkunden Klasse, erbt von Kunde.
+    // Privatkunden Klasse, erbt von Kunde
     internal class Privatkunde : Kunde
     {
         
