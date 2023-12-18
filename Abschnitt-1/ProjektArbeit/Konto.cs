@@ -217,17 +217,21 @@ namespace ProjektArbeit
                     decimal betrag;
                     string beschreibung;
 
-                    Console.WriteLine("Betrag eingeben: ");
-                    if (decimal.TryParse(Console.ReadLine(), out betrag) && betrag > 0)
+                    while(true)
                     {
-                        Console.Write("Beschreibung eingeben: ");
-                        beschreibung = Console.ReadLine();
+                        Console.WriteLine("Betrag eingeben: ");
+                        if (decimal.TryParse(Console.ReadLine(), out betrag) && betrag > 0)
+                        {
+                            Console.Write("Beschreibung eingeben: ");
+                            beschreibung = Console.ReadLine();
 
-                        einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Ungueltiger Betrag.");
+                            einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ungueltiger Betrag.");
+                        }
                     }
                 }
                 else 
