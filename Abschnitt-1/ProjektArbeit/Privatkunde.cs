@@ -105,6 +105,7 @@ namespace ProjektArbeit
                 Console.Write(aufforderung);
                 try
                 {
+
                     DateTime eingabeDatum = DateTime.Parse(Console.ReadLine());
                     // Pruefen ob Geburtsdatum in der Zukunft liegt und nicht ueber 100 Jahre in der Vergangenheit liegt
                     // Format wird automatisch uebernommen, das heist auch 12.12.99 waehre gueltig
@@ -149,7 +150,7 @@ namespace ProjektArbeit
         }
         public override string ToStringPlus()
         {
-            return $"Kundennummer: {base.Kundennummer}, Vorname: {Vorname}, Nachname: {Nachname}, Geburtsdatum: {Geburtsdatum.ToString("yyyy.MM.dd")}, Telefonnummer: {base.Telefonnummer}, E-Mail: {base.Email}, {base.Adresse.ToStringPlus()}, Kontenanzahl: {base.Konten.Count}";
+            return $"|{base.Kundennummer, 3}|{Vorname, 8}|{Nachname, 12}|{Geburtsdatum.ToString("yyyy.MM.dd"), 15}|{base.Telefonnummer, 12}|{base.Email, 10}{base.Adresse.ToStringPlus()}|{base.Konten.Count, 3}|";
         }
     }
   

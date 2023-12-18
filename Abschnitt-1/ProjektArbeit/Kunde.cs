@@ -222,46 +222,7 @@ namespace ProjektArbeit
                 Console.WriteLine(kunde.ToStringPlus());
             }
         }
-        //public static void KundenMitKontoAnzeigen(string name)
-        //{
-        //    Kunde kunde = KundenNamenSuche(name);
-        //    if (kunde != null && kunde.Konten.Any())
-        //    {
-        //        Console.WriteLine($"Kunde mit der Kundennummer {kunde.Kundennummer} hat folgende Konten:");
-        //        foreach (var konto in kunde.Konten)
-        //        {
-        //            Console.WriteLine(konto);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Kunde nicht gefunden oder keine Konten.");
-        //    }
-        //}
-        //public static Kunde KundenNamenSuche(string name)
-        //{
-        //    List<Kunde> trefferKunden = new List<Kunde>();
-        //    foreach (var bank in Bank.AlleBanken())
-        //    {
-        //        Kunde trefferPrivatkunde = bank.Kunden.OfType<Privatkunde>().FirstOrDefault(k =>
-        //    k.Vorname.Equals(name, StringComparison.OrdinalIgnoreCase) || k.Nachname.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-        //        if(trefferPrivatkunde != null)
-        //        {
-        //            return trefferPrivatkunde;
-        //        }
-
-        //        Kunde trefferFirmenkunde = bank.Kunden.OfType<Firmenkunde>().FirstOrDefault(k =>
-        //    k.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-
-        //        if(trefferFirmenkunde != null)
-        //        {
-        //            return trefferFirmenkunde;
-        //        }
-
-        //    }
-        //    return null;
-        //}
+        
         // Methode fuer Ueberpruefugen (ausser fuer Geburtstag, PLZ, und Anzahl der Konten)
         public static string Pruefen(Regex regex, string aufforderung, string fehlermeldung)
         {

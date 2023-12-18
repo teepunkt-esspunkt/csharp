@@ -87,7 +87,7 @@ namespace ProjektArbeit
         }
         public override string ToStringPlus()
         {
-            return $"Kundennummer: {base.Kundennummer}, Firmenname: {Name}, Telefonnummer: {base.Telefonnummer}, E-Mail: {base.Email}, {base.Adresse.ToStringPlus()}, Kontenanzahl: {base.Konten.Count}, {Ansprechpartner.ToStringPlus()}";
+            return $"|{base.Kundennummer, 3}|{Name, 8}|{base.Telefonnummer, 10}|{base.Email, 12}{base.Adresse.ToStringPlus()}|{base.Konten.Count, 3}{Ansprechpartner.ToStringPlus()}";
         }
     }
 }

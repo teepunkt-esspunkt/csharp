@@ -4,8 +4,19 @@
     {
         static void Main(string[] args)
         {
+            Privatkunde pk1 = new Privatkunde
+           ("Tony", "Montana", new DateTime(1999, 12, 12),
+           "511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
+           3, Bank.HauptZentrale);
+            Firmenkunde fk1 = new Firmenkunde
+           ("Tony", "511 655457", "T@M.de", 
+           new Adresse("Backstreet", "12", 30245, "mexico"), 
+           3, 
+           Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
+
             while (true)
             {
+
                 // Anzeigen der Auswahlmoeglichkeiten
                 MenuAufruf();
                 //Auswahl treffen
@@ -26,7 +37,7 @@
             Console.WriteLine("(07) Alle Kunden unsortiert anzeigen");
             Console.WriteLine("(08) Alle Kunden sortiert nach aufsteigender Kundenummer anzeigen");
             Console.WriteLine("(09) Alle Konten unsortiert anzeigen");
-            Console.WriteLine("(10) Beenden");
+            Console.WriteLine("(0) Beenden");
             Console.WriteLine("");
         }
         // Auswahl treffen im Hauptmenu
@@ -61,13 +72,13 @@
                         Kunde.AlleKundenAnzeigen();
                         break;
                     case 8:
-                        Kunde.AlleKundenAnzeigen();
+                        Kunde.AlleKundenAnzeigenSortieren();
                         break;
                     case 9:
-                        Console.WriteLine("Auswahl 9");
+                        Konto.AlleKonten();
                         break;
                     case 0:
-                        Console.WriteLine("Auwahl 0");
+                        Environment.Exit(0);
                         break;
                     default:
                         throw new Exception();

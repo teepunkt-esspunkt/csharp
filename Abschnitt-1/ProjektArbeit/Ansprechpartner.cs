@@ -35,7 +35,7 @@ namespace ProjektArbeit
         }
         public string ToStringPlus()
         {
-            return $"Vorname: {Vorname}, Nachname: {Nachname}, Telefonnummer: {Telefonnummer}";
+            return $"|{Vorname, 8}|{Nachname, 8}|{Telefonnummer, 8}";
         }
     }
 }

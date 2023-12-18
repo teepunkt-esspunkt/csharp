@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -181,23 +182,23 @@ namespace ProjektArbeit
             Console.WriteLine("Ungueltige IBAN");
             return null;
         }
-        //public static Konto IbanSuche(string iban)
-        //{
-        //    foreach (var bank in Bank.AlleBanken())
-        //    {
-        //        foreach (var kunde in bank.Kunden)
-        //        {
-        //            foreach(var konto in kunde.Konten)
-        //            {
-        //                if(konto.Iban.Equals(iban, StringComparison.OrdinalIgnoreCase))
-        //                {
-        //                    return konto;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
+        
+        public static void AlleKonten()
+        {
+            Console.WriteLine($"|{"Iban", -26} | {"Kontostand", 12} in Euro | {"Kontonummer", -15}");
+
+           foreach (var bank in Bank.AlleBanken())
+            {
+                foreach(var kunde in bank.Kunden)
+                {
+                    foreach (var konto in kunde.Konten)
+                    {
+                        Console.WriteLine(konto.ToStringPlus());
+                    }
+
+                }
+            }
+        }
         public static double KontonummerGenerieren()
         {
             return Math.Floor((zufall.NextDouble() * (9999999999 - 1000000000) + 1000000000));
@@ -209,7 +210,7 @@ namespace ProjektArbeit
         }
         public string ToStringPlus()
         {
-            return $"IBAN: {Iban}, Kontostand: {Kontostand}, Kontonummer: {Kontonummer}";
+            return $"|{Iban, -25}|{Kontostand.ToString("N2"), 15} Euro|{Kontonummer, -15}";
         }
 
     }
