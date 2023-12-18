@@ -93,7 +93,7 @@ namespace ProjektArbeit
             }
            else
             {
-                Console.WriteLine("Ungueltige Eingaber.");
+                Console.WriteLine("Ungueltige Eingabe.");
             }
             
         }
