@@ -208,7 +208,35 @@ namespace ProjektArbeit
         }
         public static void EinzahlenAuswahl()
         {
-
+            decimal betrag = 0;
+            string beschreibung = "";
+            try
+            {
+                Konto einzuzahlendesKonto = IbanSuche();
+                betrag = decimal.Parse(Console.ReadLine());
+                beschreibung = Console.ReadLine();
+                einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
+            }
+            catch(Exception)
+            {
+                Console.WriteLine("Fehler aufgetreten");
+            }
+        }
+        public static void AuszahlenAuswahl()
+        {
+            decimal betrag = 0;
+            string beschreibung = "";
+            try
+            {
+                Konto einzuzahlendesKonto = IbanSuche();
+                betrag = decimal.Parse(Console.ReadLine());
+                beschreibung = Console.ReadLine();
+                einzuzahlendesKonto.Auszahlen(betrag, beschreibung);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fehler aufgetreten");
+            }
         }
         public void Einzahlen(decimal betrag, string beschreibung)
         {
@@ -220,7 +248,7 @@ namespace ProjektArbeit
                     kontostand += betrag;
                 } else
                 {
-                    throw new ArgumentException("Einzuzahlende Betrag muss positiv sein.");
+                    throw new ArgumentException("Einzuzahlender Betrag muss positiv sein.");
                 }
             }
             catch (ArgumentException ae)
