@@ -16,6 +16,8 @@ namespace ProjektArbeit
         private string iban;
         private decimal kontostand;
         private double kontonummer;
+        private List<Transaktion> transaktionen;
+
 
 
         // Properties
@@ -33,6 +35,11 @@ namespace ProjektArbeit
         {
             get { return kontonummer; }
             set { kontonummer = value; }
+        }
+        public List<Transaktion> Transaktionen
+        {
+            get { return transaktionen; }
+            set { transaktionen = value; }
         }
 
         // Konstruktor
@@ -197,6 +204,47 @@ namespace ProjektArbeit
                     }
 
                 }
+            }
+        }
+        public static void EinzahlenAuswahl()
+        {
+
+        }
+        public void Einzahlen(decimal betrag, string beschreibung)
+        {
+            try
+            {
+                betrag = decimal.Parse(Console.ReadLine());
+                if (betrag > 0)
+                {
+                    kontostand += betrag;
+                } else
+                {
+                    throw new ArgumentException("Einzuzahlende Betrag muss positiv sein.");
+                }
+            }
+            catch (ArgumentException ae)
+            {
+                Console.WriteLine(ae.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ungueltige Eingabe");
+            }
+            var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Einzahlung", Beschreibungstext = beschreibung, Betrag = betrag };
+            Transaktionen.Add(transaktion);
+        }
+        public void Auszahlen(decimal betrag, string beschreibung)
+        {
+            if(Kontostand >= betrag)
+            {
+                Kontostand -= betrag;
+                var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Auszahlung", Beschreibungstext = beschreibung, Betrag = betrag };
+                Transaktionen.Add(transaktion);
+            }
+            else
+            {
+                Console.WriteLine($"Kein ausreichendes Guthaben. Verfügbares Guthaben: {this.kontostand}");
             }
         }
         public static double KontonummerGenerieren()

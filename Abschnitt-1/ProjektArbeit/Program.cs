@@ -37,7 +37,12 @@
             Console.WriteLine("(07) Alle Kunden unsortiert anzeigen");
             Console.WriteLine("(08) Alle Kunden sortiert nach aufsteigender Kundenummer anzeigen");
             Console.WriteLine("(09) Alle Konten unsortiert anzeigen");
-            Console.WriteLine("(0) Beenden");
+            Console.WriteLine("(10) Geld auf Konto einzahlen");
+            Console.WriteLine("(11) Geld von Konto abheben");
+            Console.WriteLine("(12) Transaktionsliste absteigend sortiert nach Zeitstempel anzeigen");
+            Console.WriteLine("(13) Transaktionsliste aufsteigend sortiert nach Zeitstempel speichern");
+            Console.WriteLine("(14) Transaktionsliste einlesen");
+            Console.WriteLine("(15) Beenden");
             Console.WriteLine("");
         }
         // Auswahl treffen im Hauptmenu
@@ -77,7 +82,13 @@
                     case 9:
                         Konto.AlleKonten();
                         break;
-                    case 0:
+                    case 10:
+                        Konto.AlleKonten();
+                        break;
+                    case 11:
+                        Konto.EinzahlenAuswahl();
+                        break;
+                    case 15:
                         Environment.Exit(0);
                         break;
                     default:
@@ -86,7 +97,7 @@
             }
             catch (Exception)
             {
-                Console.WriteLine("Ungueltige Auswahl! Bitte 0 - 9 waehlen");
+                Console.WriteLine("Ungueltige Auswahl! Bitte 1 - 15 waehlen");
             }
         }
     }
