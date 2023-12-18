@@ -86,7 +86,10 @@
                         Konto.EinzahlenAuswahl();
                         break;
                     case 11:
-                        Konto.EinzahlenAuswahl();
+                        Konto.AuszahlenAuswahl();
+                        break;
+                    case 12:
+                        Transaktion.TransaktionslisteAbsteigendAnzeigen();
                         break;
                     case 15:
                         Environment.Exit(0);

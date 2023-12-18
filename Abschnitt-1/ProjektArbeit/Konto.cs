@@ -88,12 +88,10 @@ namespace ProjektArbeit
                 catch (ArgumentException ae)
                 {
                     Console.WriteLine(ae.Message);
-
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("Bitte gueltigen Betrag eingeben");
-
                 }
             }
         }
@@ -109,7 +107,6 @@ namespace ProjektArbeit
                 try
                 {
                     kundennummer = int.Parse(Console.ReadLine());
-                
                     kunde = Kunde.KundennummerSuche(kundennummer);
                     if (kunde != null && kunde.Konten.Count < kunde.MaxKonten)
                     {
@@ -127,8 +124,6 @@ namespace ProjektArbeit
                                 double kontonummer = KontonummerGenerieren();
                                 string bic;
                                 bic = kunde.Bank.Bic;
-
-
                                 string iban = $"DE 89 {bic} {kontonummer}";
                                 Konto konto = new Konto(iban, kontostand, kontonummer);
                                 kunde.Konten.Add(konto);
@@ -146,19 +141,16 @@ namespace ProjektArbeit
                     }
                     else if (kunde == null)
                     {
-                        
                         throw new ArgumentException("Kunde nicht vorhanden.");
                     }
                     else
                     {
-                        
                         throw new ArgumentException($"Maximale Anzahl der Konten erreicht.");
                     }
                 }
                 catch (ArgumentException ae)
                 {
                     Console.WriteLine(ae.Message);
-                    
                 }
                 catch (Exception)
                 {
@@ -192,7 +184,7 @@ namespace ProjektArbeit
         
         public static void AlleKonten()
         {
-            Console.WriteLine($"|{"Iban", -26}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
+           Console.WriteLine($"|{"Iban", -26}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
 
            foreach (var bank in Bank.AlleBanken())
             {
@@ -202,17 +194,62 @@ namespace ProjektArbeit
                     {
                         Console.WriteLine(konto.ToStringPlus());
                     }
-
                 }
+            }
+        }
+
+        public static void AuszahlenAuswahl()
+        {
+            try
+            {
+                Konto auszahlendesKonto = IbanSuche();
+                if(auszahlendesKonto != null)
+                {
+                    decimal betrag = 0;
+                    string beschreibung = "";
+                    while (true)
+                    {
+                        Console.Write("Bitte Betrag eingeben: ");
+                        try
+                        {
+                            betrag = decimal.Parse(Console.ReadLine());
+                            if (betrag > 0 && betrag <= auszahlendesKonto.Kontostand)
+                            {
+                                Console.Write("Bitte Beschreibung eingeben: ");
+                                beschreibung = Console.ReadLine();
+                                auszahlendesKonto.Auszahlen(betrag, beschreibung);
+                                break;
+                            }
+                            else if (betrag <= 0)
+                            {
+                                throw new ArgumentException("Bitte positiven Betrag eingeben");
+                            }
+                            else if (betrag > auszahlendesKonto.Kontostand)
+                            {
+                                throw new ArgumentException($"Unzureichendes Guthaben. Maxmimal verfuegbar: {auszahlendesKonto.Kontostand}.");
+                            }
+                        }
+                        catch (ArgumentException ae)
+                        {
+                            Console.WriteLine(ae.Message);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Ungueltige Eingabe.");
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fehler aufgetreten");
             }
         }
         public static void EinzahlenAuswahl()
         {
-
             try
             {
                 Konto einzuzahlendesKonto = IbanSuche();
-
                 if (einzuzahlendesKonto != null)
                 {
                     decimal betrag;
@@ -230,42 +267,21 @@ namespace ProjektArbeit
                                 einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
                                 break;
                             }
+                            else
+                             Console.WriteLine("Bitte positiven Betrag eingeben.");
                         }
-                        catch (Exception)
+                        catch (Exception) 
                         {
                             Console.WriteLine("Ungueltiger Betrag.");
-
                         }
                     }
                 }
                 else 
-                { 
-                    Console.WriteLine("Konto nicht gefunden"); 
-                }
+                    Console.WriteLine("Konto nicht gefunden");
             }
-            catch (Exception)
+            catch (Exception) 
             {
                 Console.WriteLine("Fehler aufgetreten");
-            }
-        }
-        public static void AuszahlenAuswahl()
-        {
-            decimal betrag = 0;
-            string beschreibung = "";
-            while (true)
-            {
-                try
-                {
-                    Konto einzuzahlendesKonto = IbanSuche();
-                    betrag = decimal.Parse(Console.ReadLine());
-                    beschreibung = Console.ReadLine();
-                    einzuzahlendesKonto.Auszahlen(betrag, beschreibung);
-                    break;
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Fehler aufgetreten");
-                }
             }
         }
         public void Einzahlen(decimal betrag, string beschreibung)
@@ -274,42 +290,56 @@ namespace ProjektArbeit
             {
                 try
                 {
-                    betrag = decimal.Parse(Console.ReadLine());
                     if (betrag > 0)
                     {
                         kontostand += betrag;
                     }
-                    else
-                    {
-                        throw new ArgumentException("Einzuzahlender Betrag muss positiv sein.");
-                    }
-                }
-                catch (ArgumentException ae)
-                {
-                    Console.WriteLine(ae.Message);
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("Ungueltige Eingabe");
                 }
-                var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Einzahlung", Beschreibungstext = beschreibung, Betrag = betrag };
+                var transaktion = new Transaktion
+                {
+                    TransIban = this.iban,
+                    Zeitstempel = DateTime.Now, 
+                    Transaktionsart = "Einzahlung", 
+                    Beschreibungstext = beschreibung, 
+                    Betrag = betrag 
+                };
                 transaktionen.Add(transaktion);
                 break;
             }
         }
+
         public void Auszahlen(decimal betrag, string beschreibung)
         {
-            if(Kontostand >= betrag)
+            while (true)
             {
-                Kontostand -= betrag;
-                var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Auszahlung", Beschreibungstext = beschreibung, Betrag = betrag };
+                try
+                {
+                    if (betrag > 0 && Kontostand >= betrag)
+                    {
+                        Kontostand -= betrag;
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Fehler aufgetreten");
+                }
+                var transaktion = new Transaktion 
+                { 
+                    TransIban = this.iban,
+                    Zeitstempel = DateTime.Now, 
+                    Transaktionsart = "Auszahlung", 
+                    Beschreibungstext = beschreibung, 
+                    Betrag = betrag 
+                };
                 Transaktionen.Add(transaktion);
-            }
-            else
-            {
-                Console.WriteLine($"Kein ausreichendes Guthaben. Verfügbares Guthaben: {this.kontostand}");
+                break;
             }
         }
+
         public static double KontonummerGenerieren()
         {
             return Math.Floor((zufall.NextDouble() * (9999999999 - 1000000000) + 1000000000));
@@ -323,6 +353,5 @@ namespace ProjektArbeit
         {
             return $"|{Iban, -25}|{Kontostand.ToString("N2"), 15} Euro|{Kontonummer, -15}";
         }
-
     }
 }
