@@ -48,7 +48,7 @@ namespace ProjektArbeit
             this.iban = iban;
             this.kontostand = kontostand;
             this.kontonummer = kontonummer;
-           
+            transaktionen = new List<Transaktion>();
         }
 
         // Kontenerstellung bei Aufruf von PrivatkundeAnlegen oder FirmenkundeAnlegen.
@@ -192,7 +192,7 @@ namespace ProjektArbeit
         
         public static void AlleKonten()
         {
-            Console.WriteLine($"|{"Iban", -26} | {"Kontostand", 12} in Euro | {"Kontonummer", -15}");
+            Console.WriteLine($"|{"Iban", -26}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
 
            foreach (var bank in Bank.AlleBanken())
             {
@@ -208,6 +208,7 @@ namespace ProjektArbeit
         }
         public static void EinzahlenAuswahl()
         {
+
             try
             {
                 Konto einzuzahlendesKonto = IbanSuche();
@@ -216,22 +217,22 @@ namespace ProjektArbeit
                 {
                     decimal betrag;
                     string beschreibung;
-
-                    while(true)
+                   
+                    Console.Write("Betrag eingeben: ");
+                    try
                     {
-                        Console.WriteLine("Betrag eingeben: ");
-                        if (decimal.TryParse(Console.ReadLine(), out betrag) && betrag > 0)
+                        betrag = decimal.Parse(Console.ReadLine());
+                        if(betrag > 0)
                         {
                             Console.Write("Beschreibung eingeben: ");
                             beschreibung = Console.ReadLine();
-
                             einzuzahlendesKonto.Einzahlen(betrag, beschreibung);
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ungueltiger Betrag.");
-                        }
+                                
+                        }    
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Ungueltiger Betrag.");
                     }
                 }
                 else 
@@ -248,41 +249,50 @@ namespace ProjektArbeit
         {
             decimal betrag = 0;
             string beschreibung = "";
-            try
+            while (true)
             {
-                Konto einzuzahlendesKonto = IbanSuche();
-                betrag = decimal.Parse(Console.ReadLine());
-                beschreibung = Console.ReadLine();
-                einzuzahlendesKonto.Auszahlen(betrag, beschreibung);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Fehler aufgetreten");
+                try
+                {
+                    Konto einzuzahlendesKonto = IbanSuche();
+                    betrag = decimal.Parse(Console.ReadLine());
+                    beschreibung = Console.ReadLine();
+                    einzuzahlendesKonto.Auszahlen(betrag, beschreibung);
+                    break;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Fehler aufgetreten");
+                }
             }
         }
         public void Einzahlen(decimal betrag, string beschreibung)
         {
-            try
+            while (true)
             {
-                betrag = decimal.Parse(Console.ReadLine());
-                if (betrag > 0)
+                try
                 {
-                    kontostand += betrag;
-                } else
-                {
-                    throw new ArgumentException("Einzuzahlender Betrag muss positiv sein.");
+                    betrag = decimal.Parse(Console.ReadLine());
+                    if (betrag > 0)
+                    {
+                        kontostand += betrag;
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Einzuzahlender Betrag muss positiv sein.");
+                    }
                 }
+                catch (ArgumentException ae)
+                {
+                    Console.WriteLine(ae.Message);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Ungueltige Eingabe");
+                }
+                var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Einzahlung", Beschreibungstext = beschreibung, Betrag = betrag };
+                transaktionen.Add(transaktion);
+                break;
             }
-            catch (ArgumentException ae)
-            {
-                Console.WriteLine(ae.Message);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Ungueltige Eingabe");
-            }
-            var transaktion = new Transaktion { Zeitstempel = DateTime.Now, Transaktionsart = "Einzahlung", Beschreibungstext = beschreibung, Betrag = betrag };
-            Transaktionen.Add(transaktion);
         }
         public void Auszahlen(decimal betrag, string beschreibung)
         {
