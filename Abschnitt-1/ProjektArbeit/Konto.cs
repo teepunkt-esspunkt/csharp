@@ -97,7 +97,7 @@ namespace ProjektArbeit
                 }
             }
         }
-        // Ueberladene Methode ohne Parameter fuer die Auswahl aus dem Menu
+        // Methode ohne Parameter fuer die Auswahl Menupunkt 3
         public static Konto KontoAnlegen()
         {
             Kunde kunde = null;
@@ -161,6 +161,35 @@ namespace ProjektArbeit
             }
         }
 
+        // Methode fuer Menupunkt 6
+        public static List<Konto> IbanSucheAnzeige()
+        {
+            Console.WriteLine("Bitte IBAN eingeben.");
+            string iban = Console.ReadLine();
+            List<Konto> trefferKonten = new List<Konto>();
+
+            foreach (var bank in Bank.AlleBanken())
+            {
+                foreach (var kunde in bank.Kunden)
+                {
+                    foreach (var konto in kunde.Konten)
+                    {
+                        if (konto.Iban.Contains(iban, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine(konto.ToStringPlus());
+                            trefferKonten.Add(konto);
+                        }
+                    }
+                }
+            }
+            if (trefferKonten.Count == 0)
+            {
+                Console.WriteLine("Ungueltige IBAN");
+            }
+            return trefferKonten;
+        }
+        
+        // Hilfsmethode fuer einzahlen und auszahlen
         public static Konto IbanSuche()
         {
             Console.WriteLine("Bitte vollstaendige IBAN eingeben.");
@@ -172,7 +201,7 @@ namespace ProjektArbeit
                 {
                     foreach (var konto in kunde.Konten)
                     {
-                        if (konto.Iban.Contains(iban, StringComparison.OrdinalIgnoreCase))
+                        if (konto.Iban.Equals(iban, StringComparison.OrdinalIgnoreCase))
                         {
                             Console.WriteLine(konto.ToStringPlus());
                             return konto;
@@ -183,6 +212,8 @@ namespace ProjektArbeit
             Console.WriteLine("Ungueltige IBAN");
             return null;
         }
+
+        // Ueberladene Hilfs Methode fuer die Wiederherstellung der Transaktionen (csv importieren)
         public static Konto IbanSuche(string iban)
         {
             foreach (var bank in Bank.AlleBanken())
@@ -191,7 +222,7 @@ namespace ProjektArbeit
                 {
                     foreach (var konto in kunde.Konten)
                     {
-                        if (konto.Iban.Contains(iban, StringComparison.OrdinalIgnoreCase))
+                        if (konto.Iban.Equals(iban, StringComparison.OrdinalIgnoreCase))
                         {
                             Console.WriteLine(konto.ToStringPlus());
                             return konto;
@@ -202,6 +233,8 @@ namespace ProjektArbeit
             Console.WriteLine("Ungueltige IBAN");
             return null;
         }
+        
+        // Methode fuer Menupunkt 9
         public static void AlleKonten()
         {
            Console.WriteLine($"|{"Iban", 23}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
@@ -218,6 +251,7 @@ namespace ProjektArbeit
             }
         }
 
+        // Methode fuer Menupunkt 11
         public static void AuszahlenAuswahl()
         {
             try
@@ -265,6 +299,8 @@ namespace ProjektArbeit
                 Console.WriteLine("Fehler aufgetreten");
             }
         }
+
+        // Einzahlen Methode fuer Menupunkt 10
         public static void EinzahlenAuswahl()
         {
             try
@@ -304,6 +340,7 @@ namespace ProjektArbeit
                 Console.WriteLine("Fehler aufgetreten");
             }
         }
+        // Ueberladene Einzahlen methode
         public void Einzahlen(decimal betrag, string beschreibung)
         {
             while (true)
@@ -324,6 +361,8 @@ namespace ProjektArbeit
                 break;
             }
         }
+
+        // Ueberladene Auszahlen methode
         public void Auszahlen(decimal betrag, string beschreibung)
         {
             while (true)
@@ -344,6 +383,9 @@ namespace ProjektArbeit
                 break;
             }
         }
+
+        // Kontenliste in csv speichern, wird von TransaktionslisteSpeichern ausgeloest
+        // und liest seinerseits FirmenkundenSpeichern und PrivatkundenSpeichern aus
         public static void KontenSpeichern(string ordnerPfad)
         {
             string speicherPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
@@ -372,6 +414,9 @@ namespace ProjektArbeit
                 Console.WriteLine("Fehler beim Speichern der Konten.");
             }
         }
+
+        // Konten aus csv importieren, wird von TransaktionslisteImportieren ausgeloest
+        // und loest selber FirmenkundenImportieren und PrivatkundenImportieren aus
         public static void KontenImportieren(string ordnerPfad)
         {
             string standardPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
@@ -394,7 +439,8 @@ namespace ProjektArbeit
                         //Konto konto = new Konto(iban, kontostand, kontonummer);
                         //pk1.Konten.Add(konto);
                     }
-                    Kunde.KundenImportieren(ordnerPfad);
+                    Privatkunde.PrivatkundenImportieren(ordnerPfad);
+                    Firmenkunde.FirmenkundenImportieren(ordnerPfad);
                     Console.WriteLine("Kontenliste wurde erfolgreich importiert");
                 }
             }
@@ -403,7 +449,7 @@ namespace ProjektArbeit
                 Console.WriteLine($"Import nicht erfolgreich");
             }
         }
-
+        // fuer die automatische generierung einer kontonummer
         public static double KontonummerGenerieren()
         {
             return Math.Floor((zufall.NextDouble() * (9999999999 - 1000000000) + 1000000000));

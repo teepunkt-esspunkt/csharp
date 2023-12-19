@@ -78,13 +78,6 @@ namespace ProjektArbeit
             Bank.Kunden.Add(this);
         }
 
-        
-
-        public static void KundenImportieren(string ordnerPfad)
-        {
-
-        }
-
         // Methode fuer Menupunkt 4 und 5
         public static void KundenMitKontoAnzeigenAuswahl()
         {

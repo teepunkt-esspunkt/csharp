@@ -59,7 +59,7 @@
                         Kunde.KundenMitKontoAnzeigenAuswahl();
                         break;
                     case 6:
-                        Konto.IbanSuche();
+                        Konto.IbanSucheAnzeige();
                         break;
                     case 7:
                         Kunde.AlleKundenAnzeigen();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
@@ -155,6 +156,42 @@ namespace ProjektArbeit
             catch (Exception ex)
             {
                 Console.WriteLine($"Fehler beim speichern der Privatkunden.{ex.Message}");
+            }
+        }
+
+        // Privatkunden aus csv importieren, wird von KontenImportieren ausgeloest
+        public static void PrivatkundenImportieren(string ordnerPfad)
+        {
+            string standardPfad = Path.Combine(ordnerPfad, "Privatkundenliste.csv");
+            try
+            {
+                using(StreamReader reader = new StreamReader(standardPfad))
+                {
+                    string ersteZeile = reader.ReadLine();
+                    while(!reader.EndOfStream)
+                    {
+                        string zeile = reader.ReadLine();
+                        var werte = zeile.Split(',');
+                        string vorname = werte[0];
+                        string nachname = werte[1];
+                        DateTime geburtsdatum = DateTime.ParseExact(werte[2], "yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+                        string telefonnummer = werte[3];
+                        string email = werte[4];
+                        string strasse = werte[5];
+                        string hsnr = werte[6];
+                        int plz = int.Parse(werte[7]);
+                        string ort = werte[8];
+                        int anzahlKonten = int.Parse(werte[9]);
+                        string bankName = werte[10];
+                        Bank bank = Bank.AlleBanken().FirstOrDefault(b => b.Name == bankName);
+                        Privatkunde pk = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, bank);
+                        bank.Kunden.Add(pk);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fehler beim Laden der Privatkunden");
             }
         }
         public override string ToString()

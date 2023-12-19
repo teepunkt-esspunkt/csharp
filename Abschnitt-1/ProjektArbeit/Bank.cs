@@ -67,7 +67,7 @@ namespace ProjektArbeit
         // Zum Speichern in die CSV Datei
         public override string ToString()
         {
-            return $"Bank.{Name}";
+            return Name;
         }
     }
 }

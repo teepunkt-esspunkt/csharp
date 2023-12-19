@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -105,7 +106,44 @@ namespace ProjektArbeit
                 Console.WriteLine($"Fehler beim speichern der Firmenkunden.{ex.Message}");
             }
         }
-
+        // Firmenkunden aus csv importieren, wird von KontenImportieren ausgeloest
+        public static void FirmenkundenImportieren(string ordnerPfad)
+        {
+            string standardPfad = Path.Combine(ordnerPfad, "Firmenkundenliste.csv");
+            try
+            {
+                using (StreamReader reader = new StreamReader(standardPfad))
+                {
+                    string ersteZeile = reader.ReadLine();
+                    while (!reader.EndOfStream)
+                    {
+                        string zeile = reader.ReadLine();
+                        var werte = zeile.Split(',');
+                        string name = werte[0];
+                        string telefonnummer = werte[1];
+                        string email = werte[2];
+                        string strasse = werte[3];
+                        string hsnr = werte[4];
+                        int plz = int.Parse(werte[5]);
+                        string ort = werte[6];
+                        int anzahlKonten = int.Parse(werte[7]);
+                        string bankName = werte[9];
+                        string vorname = werte[10];
+                        string nachname = werte[11];
+                        string telefonAp = werte[12];
+                      //Finden der Bank durch den gespeicherten Namen
+                        Bank bank = Bank.AlleBanken().FirstOrDefault(b => b.Name == bankName);
+                      
+                        Firmenkunde fk = new Firmenkunde(name, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, bank, new Ansprechpartner(vorname, nachname, telefonAp));
+                        bank.Kunden.Add(fk);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fehler beim Laden der Privatkunden");
+            }
+        }
         public override string ToString()
         {
             return $"{Name}, {base.Kundennummer}, {base.Telefonnummer}, {base.Email}, {base.Adresse}, {base.Konten.Count}, {Ansprechpartner}";

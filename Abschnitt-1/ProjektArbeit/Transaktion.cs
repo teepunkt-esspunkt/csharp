@@ -12,12 +12,14 @@ namespace ProjektArbeit
 {
     internal class Transaktion
     {
+        //Attribute
         private string transIban;
         private DateTime zeitstempel;
         private string transaktionsart;
         private string beschreibungstext;
         private decimal betrag;
 
+        //Properties
         public string TransIban
         {
             get { return transIban; }
@@ -44,6 +46,7 @@ namespace ProjektArbeit
             set { betrag = value; }
         }
 
+        // Konstruktor
         public Transaktion(string transIban, DateTime zeitstempel, string transaktionsart, string beschreibungstext, decimal betrag)
         {
             TransIban = transIban;
@@ -53,6 +56,7 @@ namespace ProjektArbeit
             Betrag = betrag;
         }
 
+        // Methode fuer Menupunkt 12
         public static void TransaktionslisteAbsteigendAnzeigen()
         {
             Console.WriteLine("Transaktionsliste absteigend sortiert nach Zeitstempel:");
@@ -72,6 +76,8 @@ namespace ProjektArbeit
                 }
             }
         }
+
+        // Transaktionsliste in csv Speichern, loest auch das Speichern der anderen KontoKlassen aus
         public static void TransaktionslisteSpeichernn()
         {
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -114,6 +120,8 @@ namespace ProjektArbeit
                 Console.WriteLine("Fehler beim Speichern der Transaktionsliste.");
             }
         }
+
+        // Menupunkt 14, loest das importieren der Kontenliste aus
         public static void TransaktionslisteImportieren()
         {
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -127,7 +135,7 @@ namespace ProjektArbeit
                 using (StreamReader reader = new StreamReader(dateiPfad))
                 {
                     string ersteZeile = reader.ReadLine();
-
+                    Konto.KontenImportieren(ordnerPfad);
                     while (!reader.EndOfStream)
                     {
                         string zeile = reader.ReadLine();
@@ -140,7 +148,7 @@ namespace ProjektArbeit
                         decimal betrag = decimal.Parse(werte[4], CultureInfo.InvariantCulture);
 
                         Transaktion transaktion = new Transaktion(iban, zeitstempel, transaktionsart, beschreibungstext, betrag);
-                        Konto.KontenImportieren(ordnerPfad);
+                        
                         Konto.IbanSuche(iban).Transaktionen.Add(transaktion);
                     }
                     Console.WriteLine("Transaktionsliste wurde erfolgreich importiert");
