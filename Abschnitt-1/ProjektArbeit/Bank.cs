@@ -63,5 +63,10 @@ namespace ProjektArbeit
         {
             kunden.Add(kunde);
         }
+
+        public override string ToString()
+        {
+            return $"Bank.{Name}";
+        }
     }
 }

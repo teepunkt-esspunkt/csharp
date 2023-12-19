@@ -78,33 +78,7 @@ namespace ProjektArbeit
             Bank.Kunden.Add(this);
         }
 
-        public static void KundenSpeichern(string ordnerPfad)
-        {
-            string speicherPfad = Path.Combine(ordnerPfad, "Privatkundenliste.csv");
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(speicherPfad))
-                {
-                    writer.WriteLine("vorname,nachname,geburtsdatum,telefonnummer,email,strasse,hsnr,plz,ort,anzahlKonten,Bank");
-                    foreach (var bank in Bank.AlleBanken())
-                    {
-                        foreach (Privatkunde kunde in bank.Kunden)
-                        {
-                            writer.WriteLine($"{kunde.Vorname},{kunde.Nachname},{kunde.Geburtsdatum},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Konten.Count}");
-                        }
-                        writer.WriteLine("firmenname,telefonnummer,email,strasse,hausnummer,plz,ort,anzahl,ort,anzahlKonten,Bank");
-                        foreach (Firmenkunde kunde in bank.Kunden)
-                        {
-                            writer.WriteLine($"{kunde.Name},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Konten.Count}, {Bank.HauptZentrale},{kunde.Ansprechpartner.Vorname},{kunde.Ansprechpartner.Nachname},{kunde.Ansprechpartner.Telefonnummer}");
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Fehler beim speichern.");
-            }
-        }
+        
 
         public static void KundenImportieren(string ordnerPfad)
         {

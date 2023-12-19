@@ -20,13 +20,11 @@ namespace ProjektArbeit
             get { return name; } 
             set { name = value; }
         }
-
         public Ansprechpartner Ansprechpartner
         {
             get { return ansprechpartner; }
             set { ansprechpartner = value; }
         }
-
         // Konstruktor
         public Firmenkunde
             (string name, string telefonnummer, string email, 
@@ -36,9 +34,7 @@ namespace ProjektArbeit
             Name = name;
             Ansprechpartner = ansprechpartner;
         }
-
         // Methode zum Firmenkunde anlegen
-
         public static Firmenkunde FirmenkundeAnlegen()
         {
             //Regex Pattern fuer Firmenname (mindestens ein alphbetisches Zeichen, Zahlen sind erlaubt)
@@ -79,6 +75,34 @@ namespace ProjektArbeit
 
             Console.WriteLine(fk1.ToString());
             return fk1;
+        }
+
+        // Zum speichern in eine csv Datei (letztes Kettenglied..)
+        public static void FirmenkundenSpeichern(string ordnerPfad)
+        {
+            string speicherPfad = Path.Combine(ordnerPfad, "Firmenkundenliste.csv");
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(speicherPfad))
+                {
+                    writer.WriteLine("name,telefonnummer,email,strasse,hausnummer,plz,ort,anzahlKonten,bank,VornameAnsprechpartner,NachnameAnsprechpartner,TelefonnummerAnsprechpartner");
+                    foreach (var bank in Bank.AlleBanken())
+                    {
+                        foreach (Firmenkunde kunde in bank.Kunden.OfType<Firmenkunde>())
+                        {
+                            if (kunde is Firmenkunde firmenkunde)
+                            {
+                                writer.WriteLine($"{firmenkunde.Name},{firmenkunde.Telefonnummer},{firmenkunde.Email},{firmenkunde.Adresse.Strasse},{firmenkunde.Adresse.Hsnr},{firmenkunde.Adresse.Plz},{firmenkunde.Adresse.Ort},{firmenkunde.Bank.ToString()},{firmenkunde.Konten.Count},{firmenkunde.Bank},{firmenkunde.Ansprechpartner.Vorname},{firmenkunde.Ansprechpartner.Nachname},{firmenkunde.Ansprechpartner.Telefonnummer}");
+                            }
+                        }
+                    }
+                }
+                Console.WriteLine($"Firmenkundenliste wurde gespeichert in {speicherPfad}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim speichern der Firmenkunden.{ex.Message}");
+            }
         }
 
         public override string ToString()

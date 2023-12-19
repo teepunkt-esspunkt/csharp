@@ -56,7 +56,7 @@ namespace ProjektArbeit
         public static void TransaktionslisteAbsteigendAnzeigen()
         {
             Console.WriteLine("Transaktionsliste absteigend sortiert nach Zeitstempel:");
-            Console.WriteLine($"|{"IBAN", 26}|{"Zeitstempel",25}|{"Transaktionsart",15}|{"Beschreibungstext",18}|{"Betrag",8}");
+            Console.WriteLine($"|{"IBAN", 23}|{"Zeitstempel",25}|{"Transaktionsart",15}|{"Beschreibungstext",18}|{"Betrag",8}");
 
             foreach (var bank in Bank.AlleBanken())
             {
@@ -107,14 +107,13 @@ namespace ProjektArbeit
                     }
                 }
                 Konto.KontenSpeichern(ordnerPfad);
-                Console.WriteLine($"Transaktionsliste wurd gespeichert in {dateiPfad}");
+                Console.WriteLine($"Transaktionsliste wurde gespeichert in {dateiPfad}");
             }
             catch (Exception)
             {
                 Console.WriteLine("Fehler beim Speichern der Transaktionsliste.");
             }
         }
-
         public static void TransaktionslisteImportieren()
         {
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -125,7 +124,6 @@ namespace ProjektArbeit
             string ordnerPfad = Path.GetDirectoryName(dateiPfad);
             try
             {
-               
                 using (StreamReader reader = new StreamReader(dateiPfad))
                 {
                     string ersteZeile = reader.ReadLine();
@@ -144,9 +142,7 @@ namespace ProjektArbeit
                         Transaktion transaktion = new Transaktion(iban, zeitstempel, transaktionsart, beschreibungstext, betrag);
                         Konto.KontenImportieren(ordnerPfad);
                         Konto.IbanSuche(iban).Transaktionen.Add(transaktion);
-                       
                     }
-
                     Console.WriteLine("Transaktionsliste wurde erfolgreich importiert");
                 }
             }
@@ -155,15 +151,13 @@ namespace ProjektArbeit
                 Console.WriteLine($"Import nicht erfolgreich");
             }
         }
-    
-
     public override string ToString()
         {
             return $"{TransIban}, {Zeitstempel}, {Transaktionsart}, {Beschreibungstext}, {Betrag}";
         }
         public string ToStringPlus()
         {
-            return $"|{TransIban, 26}|{Zeitstempel, 25}|{Transaktionsart, 15}|{Beschreibungstext, 18}|{Betrag.ToString("N2"), 8}";
+            return $"|{TransIban, 23}|{Zeitstempel, 25}|{Transaktionsart, 15}|{Beschreibungstext, 18}|{Betrag.ToString("N2"), 8}";
         }
     }
 }

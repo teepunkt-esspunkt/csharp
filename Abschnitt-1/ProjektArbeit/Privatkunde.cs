@@ -40,7 +40,7 @@ namespace ProjektArbeit
         {
             get { return geburtsdatum; }
         }
-        
+
         // Konstruktor
         public Privatkunde
             (string vorname, string nachname, DateTime geburtsdatum, 
@@ -105,7 +105,6 @@ namespace ProjektArbeit
                 Console.Write(aufforderung);
                 try
                 {
-
                     DateTime eingabeDatum = DateTime.Parse(Console.ReadLine());
                     // Pruefen ob Geburtsdatum in der Zukunft liegt und nicht ueber 100 Jahre in der Vergangenheit liegt
                     // Format wird automatisch uebernommen, das heist auch 12.12.99 waehre gueltig
@@ -141,11 +140,29 @@ namespace ProjektArbeit
                 }
             }
         }
-
-        
-
-
-
+        public static void PrivatkundenSpeichern(string ordnerPfad)
+        {
+            string speicherPfad = Path.Combine(ordnerPfad, "Privatkundenliste.csv");
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(speicherPfad))
+                {
+                    writer.WriteLine("vorname,nachname,geburtsdatum,telefonnummer,email,strasse,hsnr,plz,ort,anzahlKonten");
+                    foreach (var bank in Bank.AlleBanken())
+                    {
+                        foreach (Privatkunde kunde in bank.Kunden.OfType<Privatkunde>())
+                        {
+                            writer.WriteLine($"{kunde.Vorname},{kunde.Nachname},{kunde.Geburtsdatum},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Konten.Count},{kunde.Bank.ToString()}");
+                        }
+                    }
+                }
+                Console.WriteLine($"Privatkundenliste wurde gespeichert in {speicherPfad}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler beim speichern der Privatkunden.{ex.Message}");
+            }
+        }
         public override string ToString()
         {
             return $"{Vorname}, {Nachname}, {Geburtsdatum}, {base.Kundennummer}, {base.Telefonnummer}, {base.Email}, {base.Adresse}, {base.Konten.Count}";

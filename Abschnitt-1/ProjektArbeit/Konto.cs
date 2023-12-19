@@ -204,7 +204,7 @@ namespace ProjektArbeit
         }
         public static void AlleKonten()
         {
-           Console.WriteLine($"|{"Iban", -26}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
+           Console.WriteLine($"|{"Iban", 23}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
 
            foreach (var bank in Bank.AlleBanken())
             {
@@ -320,19 +320,10 @@ namespace ProjektArbeit
                     Console.WriteLine("Ungueltige Eingabe");
                 }
                 Transaktion transaktion = new Transaktion(this.Iban, DateTime.Now, "Einzahlung", beschreibung, betrag);
-                //var transaktion = new Transaktion 
-                //{
-                //    TransIban = this.iban,
-                //    Zeitstempel = DateTime.Now, 
-                //    Transaktionsart = "Einzahlung", 
-                //    Beschreibungstext = beschreibung, 
-                //    Betrag = betrag 
-                //};
                 transaktionen.Add(transaktion);
                 break;
             }
         }
-
         public void Auszahlen(decimal betrag, string beschreibung)
         {
             while (true)
@@ -349,14 +340,6 @@ namespace ProjektArbeit
                     Console.WriteLine("Fehler aufgetreten");
                 }
                 Transaktion transaktion = new Transaktion(this.Iban, DateTime.Now, "Einzahlung", beschreibung, betrag);
-                //var transaktion = new Transaktion 
-                //{ 
-                //    TransIban = this.iban,
-                //    Zeitstempel = DateTime.Now, 
-                //    Transaktionsart = "Auszahlung", 
-                //    Beschreibungstext = beschreibung, 
-                //    Betrag = betrag 
-                //};
                 Transaktionen.Add(transaktion);
                 break;
             }
@@ -380,25 +363,17 @@ namespace ProjektArbeit
                         }
                     }
                 }
-                Kunde.KundenSpeichern(ordnerPfad);
+                Firmenkunde.FirmenkundenSpeichern(ordnerPfad);
+                Privatkunde.PrivatkundenSpeichern(ordnerPfad);
                 Console.WriteLine($"Kontenliste wurde gespeichert in {speicherPfad}");
             }
             catch (Exception)
             {
-                Console.WriteLine("Fehler beim Speichern.");
+                Console.WriteLine("Fehler beim Speichern der Konten.");
             }
         }
         public static void KontenImportieren(string ordnerPfad)
         {
-           // Privatkunde pk1 = new Privatkunde
-           //("Tony", "Montana", new DateTime(1999, 12, 12),
-           //"511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
-           //1, Bank.HauptZentrale);
-           // Firmenkunde fk1 = new Firmenkunde
-           //("Tony", "511 655457", "T@M.de",
-           //new Adresse("Backstreet", "12", 30245, "mexico"),
-           //1,
-           //Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
             string standardPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
             try
             {
@@ -440,7 +415,7 @@ namespace ProjektArbeit
         }
         public string ToStringPlus()
         {
-            return $"|{Iban, -25}|{Kontostand.ToString("N2"), 15} Euro|{Kontonummer, -15}";
+            return $"|{Iban, 23}|{Kontostand.ToString("N2"), 15} Euro|{Kontonummer, -15}";
         }
     }
 }
