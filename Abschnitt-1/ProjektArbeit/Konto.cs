@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -124,7 +126,7 @@ namespace ProjektArbeit
                                 double kontonummer = KontonummerGenerieren();
                                 string bic;
                                 bic = kunde.Bank.Bic;
-                                string iban = $"DE 89 {bic} {kontonummer}";
+                                string iban = $"DE89{bic}{kontonummer}";
                                 Konto konto = new Konto(iban, kontostand, kontonummer);
                                 kunde.Konten.Add(konto);
                                 return konto;
@@ -181,7 +183,25 @@ namespace ProjektArbeit
             Console.WriteLine("Ungueltige IBAN");
             return null;
         }
-        
+        public static Konto IbanSuche(string iban)
+        {
+            foreach (var bank in Bank.AlleBanken())
+            {
+                foreach (var kunde in bank.Kunden)
+                {
+                    foreach (var konto in kunde.Konten)
+                    {
+                        if (konto.Iban.Contains(iban, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine(konto.ToStringPlus());
+                            return konto;
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("Ungueltige IBAN");
+            return null;
+        }
         public static void AlleKonten()
         {
            Console.WriteLine($"|{"Iban", -26}|{"Kontostand", 12} in Euro|{"Kontonummer", -15}");
@@ -299,14 +319,15 @@ namespace ProjektArbeit
                 {
                     Console.WriteLine("Ungueltige Eingabe");
                 }
-                var transaktion = new Transaktion
-                {
-                    TransIban = this.iban,
-                    Zeitstempel = DateTime.Now, 
-                    Transaktionsart = "Einzahlung", 
-                    Beschreibungstext = beschreibung, 
-                    Betrag = betrag 
-                };
+                Transaktion transaktion = new Transaktion(this.Iban, DateTime.Now, "Einzahlung", beschreibung, betrag);
+                //var transaktion = new Transaktion 
+                //{
+                //    TransIban = this.iban,
+                //    Zeitstempel = DateTime.Now, 
+                //    Transaktionsart = "Einzahlung", 
+                //    Beschreibungstext = beschreibung, 
+                //    Betrag = betrag 
+                //};
                 transaktionen.Add(transaktion);
                 break;
             }
@@ -327,18 +348,88 @@ namespace ProjektArbeit
                 {
                     Console.WriteLine("Fehler aufgetreten");
                 }
-                var transaktion = new Transaktion 
-                { 
-                    TransIban = this.iban,
-                    Zeitstempel = DateTime.Now, 
-                    Transaktionsart = "Auszahlung", 
-                    Beschreibungstext = beschreibung, 
-                    Betrag = betrag 
-                };
+                Transaktion transaktion = new Transaktion(this.Iban, DateTime.Now, "Einzahlung", beschreibung, betrag);
+                //var transaktion = new Transaktion 
+                //{ 
+                //    TransIban = this.iban,
+                //    Zeitstempel = DateTime.Now, 
+                //    Transaktionsart = "Auszahlung", 
+                //    Beschreibungstext = beschreibung, 
+                //    Betrag = betrag 
+                //};
                 Transaktionen.Add(transaktion);
                 break;
             }
         }
+        public static void KontenSpeichern(string ordnerPfad)
+        {
+            string speicherPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(speicherPfad))
+                {
+                    writer.WriteLine("IBAN,Kontostand,Kontonummer");
+                    foreach (var bank in Bank.AlleBanken())
+                    {
+                        foreach (var kunde in bank.Kunden)
+                        {
+                            foreach (var konto in kunde.Konten)
+                            {
+                                writer.WriteLine($"{konto.Iban},{konto.Kontostand},{konto.Kontonummer}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fehler beim Speichern.");
+            }
+        }
+        public static void KontenImportieren(string ordnerPfad)
+        {
+            Privatkunde pk1 = new Privatkunde
+           ("Tony", "Montana", new DateTime(1999, 12, 12),
+           "511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
+           1, Bank.HauptZentrale);
+            Firmenkunde fk1 = new Firmenkunde
+           ("Tony", "511 655457", "T@M.de",
+           new Adresse("Backstreet", "12", 30245, "mexico"),
+           1,
+           Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
+            string standardPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
+            try
+            {
+
+                using (StreamReader reader = new StreamReader(standardPfad))
+                {
+                    string ersteZeile = reader.ReadLine();
+
+                    while (!reader.EndOfStream)
+                    {
+                        string zeile = reader.ReadLine();
+                        var werte = zeile.Split(',');
+
+                        string iban = werte[0];
+                        decimal kontostand = decimal.Parse(werte[1]);
+                        double kontonummer = double.Parse(werte[2]);
+
+                        Konto konto = new Konto(iban, kontostand, kontonummer);
+                        pk1.Konten.Add(konto);
+
+
+
+                    }
+
+                    Console.WriteLine("Transaktionsliste wurde erfolgreich importiert");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine($"Import nicht erfolgreich");
+            }
+        }
+
 
         public static double KontonummerGenerieren()
         {

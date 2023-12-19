@@ -4,15 +4,15 @@
     {
         static void Main(string[] args)
         {
-            Privatkunde pk1 = new Privatkunde
-           ("Tony", "Montana", new DateTime(1999, 12, 12),
-           "511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
-           3, Bank.HauptZentrale);
-            Firmenkunde fk1 = new Firmenkunde
-           ("Tony", "511 655457", "T@M.de", 
-           new Adresse("Backstreet", "12", 30245, "mexico"), 
-           3, 
-           Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
+           // Privatkunde pk1 = new Privatkunde
+           //("Tony", "Montana", new DateTime(1999, 12, 12),
+           //"511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
+           //3, Bank.HauptZentrale);
+           // Firmenkunde fk1 = new Firmenkunde
+           //("Tony", "511 655457", "T@M.de", 
+           //new Adresse("Backstreet", "12", 30245, "mexico"), 
+           //3, 
+           //Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
 
             while (true)
             {
@@ -90,6 +90,12 @@
                         break;
                     case 12:
                         Transaktion.TransaktionslisteAbsteigendAnzeigen();
+                        break;
+                    case 13:
+                        Transaktion.TransaktionslisteSpeichernn();
+                        break;
+                    case 14:
+                        Transaktion.TransaktionslisteImportieren();
                         break;
                     case 15:
                         Environment.Exit(0);
