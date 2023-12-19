@@ -80,7 +80,7 @@ namespace ProjektArbeit
                         bic = Bank.HauptZentrale.Bic;
                     }
                     // iban generieren
-                    string iban = $"DE 89 {bic} {kontonummer}";
+                    string iban = $"DE89{bic}{kontonummer}";
                     
                     Konto konto = new Konto(iban, kontostand, kontonummer);
                     // zur Kontenliste des Kunden hinzufuegen
@@ -368,18 +368,20 @@ namespace ProjektArbeit
             {
                 using (StreamWriter writer = new StreamWriter(speicherPfad))
                 {
-                    writer.WriteLine("IBAN,Kontostand,Kontonummer");
+                    writer.WriteLine("Kundennummer,IBAN,Kontostand,Kontonummer");
                     foreach (var bank in Bank.AlleBanken())
                     {
                         foreach (var kunde in bank.Kunden)
                         {
                             foreach (var konto in kunde.Konten)
                             {
-                                writer.WriteLine($"{konto.Iban},{konto.Kontostand},{konto.Kontonummer}");
+                                writer.WriteLine($"{kunde.Kundennummer},{konto.Iban},{konto.Kontostand},{konto.Kontonummer}");
                             }
                         }
                     }
                 }
+                Kunde.KundenSpeichern(ordnerPfad);
+                Console.WriteLine($"Kontenliste wurde gespeichert in {speicherPfad}");
             }
             catch (Exception)
             {
@@ -388,19 +390,18 @@ namespace ProjektArbeit
         }
         public static void KontenImportieren(string ordnerPfad)
         {
-            Privatkunde pk1 = new Privatkunde
-           ("Tony", "Montana", new DateTime(1999, 12, 12),
-           "511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
-           1, Bank.HauptZentrale);
-            Firmenkunde fk1 = new Firmenkunde
-           ("Tony", "511 655457", "T@M.de",
-           new Adresse("Backstreet", "12", 30245, "mexico"),
-           1,
-           Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
+           // Privatkunde pk1 = new Privatkunde
+           //("Tony", "Montana", new DateTime(1999, 12, 12),
+           //"511 655457", "T@M.de", new Adresse("Backstreet", "12", 30245, "mexico"),
+           //1, Bank.HauptZentrale);
+           // Firmenkunde fk1 = new Firmenkunde
+           //("Tony", "511 655457", "T@M.de",
+           //new Adresse("Backstreet", "12", 30245, "mexico"),
+           //1,
+           //Bank.HauptZentrale, new Ansprechpartner("Antonio", "Gustavson", "800 451478"));
             string standardPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
             try
             {
-
                 using (StreamReader reader = new StreamReader(standardPfad))
                 {
                     string ersteZeile = reader.ReadLine();
@@ -409,19 +410,17 @@ namespace ProjektArbeit
                     {
                         string zeile = reader.ReadLine();
                         var werte = zeile.Split(',');
-
-                        string iban = werte[0];
-                        decimal kontostand = decimal.Parse(werte[1]);
-                        double kontonummer = double.Parse(werte[2]);
-
-                        Konto konto = new Konto(iban, kontostand, kontonummer);
-                        pk1.Konten.Add(konto);
-
-
-
+                        int kundennummer = int.Parse(werte[0]);
+                        string iban = werte[1];
+                        decimal kontostand = decimal.Parse(werte[2]);
+                        double kontonummer = double.Parse(werte[3]);
+                        
+                        Kunde.KundennummerSuche(kundennummer).Konten.Add(new Konto (iban, kontostand, kontonummer));
+                        //Konto konto = new Konto(iban, kontostand, kontonummer);
+                        //pk1.Konten.Add(konto);
                     }
-
-                    Console.WriteLine("Transaktionsliste wurde erfolgreich importiert");
+                    Kunde.KundenImportieren(ordnerPfad);
+                    Console.WriteLine("Kontenliste wurde erfolgreich importiert");
                 }
             }
             catch (Exception)
@@ -429,7 +428,6 @@ namespace ProjektArbeit
                 Console.WriteLine($"Import nicht erfolgreich");
             }
         }
-
 
         public static double KontonummerGenerieren()
         {

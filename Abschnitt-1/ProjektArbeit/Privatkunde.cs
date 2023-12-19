@@ -144,6 +144,8 @@ namespace ProjektArbeit
 
         
 
+
+
         public override string ToString()
         {
             return $"{Vorname}, {Nachname}, {Geburtsdatum}, {base.Kundennummer}, {base.Telefonnummer}, {base.Email}, {base.Adresse}, {base.Konten.Count}";
