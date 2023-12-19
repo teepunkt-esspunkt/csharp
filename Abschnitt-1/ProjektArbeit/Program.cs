@@ -6,14 +6,12 @@
         {
             while (true)
             {
-
                 // Anzeigen der Auswahlmoeglichkeiten
                 MenuAufruf();
                 //Auswahl treffen
                 MenuWahl();
             }
         }
-
         // Anzeige der Auswahlmoeglichkeiten, Hauptmenu
         internal static void MenuAufruf()
         {

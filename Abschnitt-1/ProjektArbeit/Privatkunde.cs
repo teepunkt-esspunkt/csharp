@@ -12,15 +12,10 @@ namespace ProjektArbeit
     // Privatkunden Klasse, erbt von Kunde
     internal class Privatkunde : Kunde
     {
-        
         // Attribute
         private string vorname;
         private string nachname;
         private DateTime geburtsdatum;
-        //private string telefonnummer;
-        //private string email;
-        //private Adresse adresse;
-        //private int anzahlKonten;
 
         // Mindestalter für Kontoerstellung
         private static readonly int Mindestalter = 18;
@@ -75,7 +70,6 @@ namespace ProjektArbeit
             Regex regexHsnr = new Regex(patternHsnr);
 
             // Usereingaben ueberpruefen
-            //string eingabe;
             string vorname = Pruefen(regexName, "Bitte Vornamen eingeben: ", "Vorname darf nur aus alphabetischen und mindestens 2 Zeichen bestehen.");
             string nachname = Pruefen(regexName, "Bitte Nachnamen eingeben: ", "Nachname darf nur aus alphabetischen und mindestens 2 Zeichen bestehen.");
             DateTime geburtsdatum = GeburtsdatumPruefen("Bitte Geburtsdatum z.B. im Format \"JJJJ.MM.TT\" oder \"TT.MM.JJ\" eingeben: "); // Hier sind die Fehlermeldungen in der Methode, da es verschiedene sein können
@@ -88,14 +82,10 @@ namespace ProjektArbeit
             int anzahlKonten = IntPruefen("Bitte Anzahl der gewuenschten Konten eingeben: ", 1, 10, "Bitte zwischen 1 und 10 waehlen."); 
             // Rueckgabe des erstellten Privatkundenobjekts
             Privatkunde pk1 = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, Bank.HauptZentrale);
-            //Bank.HauptZentrale.KundenHinzufuegen(pk1);
-            Console.WriteLine(pk1.ToStringPlus()); // DEBUG XXX
+            Console.WriteLine(pk1.ToStringPlus());
 
             return pk1;
-            //return (new Privatkunde(vorname, nachname, gerbutsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten));
         }
-
-   
 
         // Ueberpruefung fuer das Geburtsdatum, Datum darf nicht in der Zukunft liegen und Mindestalter muss eingehalten werden
         public static DateTime GeburtsdatumPruefen(string aufforderung)
@@ -140,6 +130,7 @@ namespace ProjektArbeit
                 }
             }
         }
+        // Speichern in eine CSV Datei, Pfad wird uebernommen (letztes Kettenglied..)
         public static void PrivatkundenSpeichern(string ordnerPfad)
         {
             string speicherPfad = Path.Combine(ordnerPfad, "Privatkundenliste.csv");
@@ -147,11 +138,14 @@ namespace ProjektArbeit
             {
                 using (StreamWriter writer = new StreamWriter(speicherPfad))
                 {
+                    //erste Zeile der csv Datei
                     writer.WriteLine("vorname,nachname,geburtsdatum,telefonnummer,email,strasse,hsnr,plz,ort,anzahlKonten");
                     foreach (var bank in Bank.AlleBanken())
                     {
+                        // nur die Privatkunden
                         foreach (Privatkunde kunde in bank.Kunden.OfType<Privatkunde>())
                         {
+                            //schreiben in die csv datei
                             writer.WriteLine($"{kunde.Vorname},{kunde.Nachname},{kunde.Geburtsdatum},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Konten.Count},{kunde.Bank.ToString()}");
                         }
                     }

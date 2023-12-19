@@ -64,6 +64,7 @@ namespace ProjektArbeit
             kunden.Add(kunde);
         }
 
+        // Zum Speichern in die CSV Datei
         public override string ToString()
         {
             return $"Bank.{Name}";

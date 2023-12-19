@@ -85,6 +85,7 @@ namespace ProjektArbeit
 
         }
 
+        // Methode fuer Menupunkt 4 und 5
         public static void KundenMitKontoAnzeigenAuswahl()
         {
            
@@ -92,10 +93,12 @@ namespace ProjektArbeit
             string eingabe = Console.ReadLine();
             if(int.TryParse(eingabe, out int kundennummer))
             {
+                // Wenn die Eingabe eine Zahl war, nach Kundennummer suche
                 KundenMitKontoAnzeigen(kundennummer);
             }
             else if(!string.IsNullOrEmpty(eingabe))
             {
+                // Wenn die Eingabe ein String ist, nach namen suchen
                 KundenMitKontoAnzeigen(eingabe);
             }
            else
@@ -104,8 +107,10 @@ namespace ProjektArbeit
             }
             
         }
+        // Methode zum anzeigen eines Kunden anhand der Kundennummer
         public static void KundenMitKontoAnzeigen(int kundennummer)
         {
+            
             Kunde kunde = KundennummerSuche(kundennummer);
             if (kunde != null && kunde.Konten.Any())
             {
@@ -134,6 +139,8 @@ namespace ProjektArbeit
             }
             return null;
         }
+
+        // Anzeige aller Konten eines Kunden
         public static void KundenMitKontoAnzeigen(string name)
         {
             List<Kunde> kundenListe = KundenNamenSuche(name);
@@ -153,14 +160,15 @@ namespace ProjektArbeit
                 Console.WriteLine("Kunde nicht gefunden oder keine Konten.");
             }
         }
-
+        
+        // Namenssuche
         public static List<Kunde> KundenNamenSuche(string name)
         {
             List<Kunde> trefferKunden = new List<Kunde>();
 
             foreach (var bank in Bank.AlleBanken())
             {
-                // Search in Privatkunden
+                // in Privatkunden suchen
                 var privatkundenTreffer = bank.Kunden
                     .OfType<Privatkunde>()
                     .Where(k =>
@@ -169,7 +177,7 @@ namespace ProjektArbeit
 
                 trefferKunden.AddRange(privatkundenTreffer);
 
-                // Search in Firmenkunden
+                // in Firmenkunden suchen
                 var firmenkundenTreffer = bank.Kunden
                     .OfType<Firmenkunde>()
                     .Where(k =>
@@ -179,9 +187,9 @@ namespace ProjektArbeit
             }
             return trefferKunden;
         }
+        // Methode fuer Menupunkt 7
         public static void AlleKundenAnzeigen()
         {
-   
             foreach (var bank in Bank.AlleBanken())
             {
                 foreach (var kunde in bank.Kunden)
@@ -190,6 +198,7 @@ namespace ProjektArbeit
                 }
             }
         }
+        // Methode fuer Menupunkt 8
         public static void AlleKundenAnzeigenSortieren()
         {
             List<Kunde> alleKunden = new List<Kunde>();

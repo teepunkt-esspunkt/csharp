@@ -77,7 +77,8 @@ namespace ProjektArbeit
             return fk1;
         }
 
-        // Zum speichern in eine csv Datei (letztes Kettenglied..)
+        // Zum speichern in eine csv Datei, Pfad wird uebernommen (letztes Kettenglied..)
+        // genau wie PrivatkundenSpeichern aus der Privatkunde klasse
         public static void FirmenkundenSpeichern(string ordnerPfad)
         {
             string speicherPfad = Path.Combine(ordnerPfad, "Firmenkundenliste.csv");
