@@ -26,7 +26,6 @@ namespace ProjektArbeit
         public int Kundennummer
         {
             get { return kundennummer; }
-            //set { kundennummer=value; }
         }
         public string Telefonnummer
         {
@@ -59,7 +58,7 @@ namespace ProjektArbeit
         }
         
 
-        // Konstruktor mit Uebergabe vorhandener Adresse
+        // Konstruktor
         public Kunde(string telefonnummer, string email, Adresse adresse, int anzahlKonten, Bank bank = null)
         {
             this.kundennummer = neueKundennummer++;
@@ -67,16 +66,20 @@ namespace ProjektArbeit
             Email = email;
             Adresse = adresse;
             // Konten erstellen
-            Konten = new List<Konto>();           
-            for (int i = 0; i < anzahlKonten; i++)
+            Konten = new List<Konto>();
+            if (anzahlKonten > 0)
             {
-                Konto.KontoAnlegen(this);
+                for (int i = 0; i < anzahlKonten; i++)
+                {
+                    Konto.KontoAnlegen(this);
+                }
             }
             // Wenn keine Zweigstelle eingegeben wurde soll der Hauptsitz genommen werden
             Bank = bank ?? Bank.HauptZentrale;
             // Kunde zur Liste der Bank hinzufuegen
             Bank.Kunden.Add(this);
         }
+
 
         // Methode fuer Menupunkt 4 und 5
         public static void KundenMitKontoAnzeigenAuswahl()
@@ -165,8 +168,8 @@ namespace ProjektArbeit
                 var privatkundenTreffer = bank.Kunden
                     .OfType<Privatkunde>()
                     .Where(k =>
-                        k.Vorname.Equals(name, StringComparison.OrdinalIgnoreCase) ||
-                        k.Nachname.Equals(name, StringComparison.OrdinalIgnoreCase));
+                        k.Vorname.Contains(name, StringComparison.OrdinalIgnoreCase) ||
+                        k.Nachname.Contains(name, StringComparison.OrdinalIgnoreCase));
 
                 trefferKunden.AddRange(privatkundenTreffer);
 
@@ -174,7 +177,7 @@ namespace ProjektArbeit
                 var firmenkundenTreffer = bank.Kunden
                     .OfType<Firmenkunde>()
                     .Where(k =>
-                        k.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                        k.Name.Contains(name, StringComparison.OrdinalIgnoreCase));
 
                 trefferKunden.AddRange(firmenkundenTreffer);
             }

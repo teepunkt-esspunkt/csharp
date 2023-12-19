@@ -419,6 +419,8 @@ namespace ProjektArbeit
         // und loest selber FirmenkundenImportieren und PrivatkundenImportieren aus
         public static void KontenImportieren(string ordnerPfad)
         {
+            Privatkunde.PrivatkundenImportieren(ordnerPfad);
+            Firmenkunde.FirmenkundenImportieren(ordnerPfad);
             string standardPfad = Path.Combine(ordnerPfad, "Kontenliste.csv");
             try
             {
@@ -426,6 +428,7 @@ namespace ProjektArbeit
                 {
                     string ersteZeile = reader.ReadLine();
 
+                    
                     while (!reader.EndOfStream)
                     {
                         string zeile = reader.ReadLine();
@@ -436,11 +439,12 @@ namespace ProjektArbeit
                         double kontonummer = double.Parse(werte[3]);
                         
                         Kunde.KundennummerSuche(kundennummer).Konten.Add(new Konto (iban, kontostand, kontonummer));
+
+
                         //Konto konto = new Konto(iban, kontostand, kontonummer);
                         //pk1.Konten.Add(konto);
                     }
-                    Privatkunde.PrivatkundenImportieren(ordnerPfad);
-                    Firmenkunde.FirmenkundenImportieren(ordnerPfad);
+                   
                     Console.WriteLine("Kontenliste wurde erfolgreich importiert");
                 }
             }

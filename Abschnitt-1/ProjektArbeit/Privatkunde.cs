@@ -49,6 +49,7 @@ namespace ProjektArbeit
             this.geburtsdatum = geburtsdatum;
             
         }
+
         
         // Methode zum Privatkunden anlegen
         public static Privatkunde PrivatkundeAnlegen()
@@ -64,7 +65,7 @@ namespace ProjektArbeit
             string patternMail = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
             Regex regexMail = new Regex(patternMail);
             //Regex Pattern fuer Strasse (nur 1 Zeichen mehr als name)
-            string patternStrasse = @"^[A-Za-zÖÄÜöäü]{3,}(?:[-\s'][A-Za-zÖÄÜöäü]+)?$";
+            string patternStrasse = @"^[A-Za-zÖÄÜöäü]{3,}(?:[-\s'][A-Za-zÖÄÜöäü]+)*$";
             Regex regexStrasse = new Regex(patternStrasse);
             //Regex Pattern fuer Hausnummer (nur 1 Zeichen mehr als name)
             string patternHsnr = @"^(?:[1-9]\d{0,2}|1\d{3})[ \/-]?[A-Za-z]{0,3}$";
@@ -140,14 +141,16 @@ namespace ProjektArbeit
                 using (StreamWriter writer = new StreamWriter(speicherPfad))
                 {
                     //erste Zeile der csv Datei
-                    writer.WriteLine("vorname,nachname,geburtsdatum,telefonnummer,email,strasse,hsnr,plz,ort,anzahlKonten");
+                    writer.WriteLine("vorname,nachname,geburtsdatum,telefonnummer,email,strasse,hsnr,plz,ort,bank");
                     foreach (var bank in Bank.AlleBanken())
                     {
                         // nur die Privatkunden
                         foreach (Privatkunde kunde in bank.Kunden.OfType<Privatkunde>())
                         {
+                            // Datum formatieren
+                            string formatiertesDatum = kunde.Geburtsdatum.ToString("yyyy-MM-dd");
                             //schreiben in die csv datei
-                            writer.WriteLine($"{kunde.Vorname},{kunde.Nachname},{kunde.Geburtsdatum},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Konten.Count},{kunde.Bank.ToString()}");
+                            writer.WriteLine($"{kunde.Vorname},{kunde.Nachname},{formatiertesDatum},{kunde.Telefonnummer},{kunde.Email},{kunde.Adresse.Strasse},{kunde.Adresse.Hsnr},{kunde.Adresse.Plz},{kunde.Adresse.Ort},{kunde.Bank.ToString()}");
                         }
                     }
                 }
@@ -174,18 +177,18 @@ namespace ProjektArbeit
                         var werte = zeile.Split(',');
                         string vorname = werte[0];
                         string nachname = werte[1];
-                        DateTime geburtsdatum = DateTime.ParseExact(werte[2], "yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+                        DateTime geburtsdatum = DateTime.ParseExact(werte[2], "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         string telefonnummer = werte[3];
                         string email = werte[4];
                         string strasse = werte[5];
                         string hsnr = werte[6];
                         int plz = int.Parse(werte[7]);
                         string ort = werte[8];
-                        int anzahlKonten = int.Parse(werte[9]);
-                        string bankName = werte[10];
+                        string bankName = werte[9];
                         Bank bank = Bank.AlleBanken().FirstOrDefault(b => b.Name == bankName);
-                        Privatkunde pk = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, bank);
-                        bank.Kunden.Add(pk);
+                        Privatkunde pk = new Privatkunde(vorname, nachname, geburtsdatum, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), 0, bank);
+                        //bank.Kunden.Add(pk);
+                        Console.WriteLine($"Privatkunde importiert mit der Kundennummer: {pk.Kundennummer}");
                     }
                 }
             }

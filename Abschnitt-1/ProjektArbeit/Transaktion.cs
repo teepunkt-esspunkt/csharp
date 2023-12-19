@@ -130,12 +130,15 @@ namespace ProjektArbeit
             string pfadEingabe = Console.ReadLine();
             string dateiPfad = string.IsNullOrEmpty(pfadEingabe) ? standardPfad : pfadEingabe;
             string ordnerPfad = Path.GetDirectoryName(dateiPfad);
+
+            Konto.KontenImportieren(ordnerPfad);
+
             try
             {
                 using (StreamReader reader = new StreamReader(dateiPfad))
                 {
                     string ersteZeile = reader.ReadLine();
-                    Konto.KontenImportieren(ordnerPfad);
+                   
                     while (!reader.EndOfStream)
                     {
                         string zeile = reader.ReadLine();

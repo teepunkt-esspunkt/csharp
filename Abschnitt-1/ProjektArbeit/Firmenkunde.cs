@@ -87,7 +87,7 @@ namespace ProjektArbeit
             {
                 using (StreamWriter writer = new StreamWriter(speicherPfad))
                 {
-                    writer.WriteLine("name,telefonnummer,email,strasse,hausnummer,plz,ort,anzahlKonten,bank,VornameAnsprechpartner,NachnameAnsprechpartner,TelefonnummerAnsprechpartner");
+                    writer.WriteLine("name,telefonnummer,email,strasse,hausnummer,plz,ort,bank,VornameAnsprechpartner,NachnameAnsprechpartner,TelefonnummerAnsprechpartner");
                     foreach (var bank in Bank.AlleBanken())
                     {
                         foreach (Firmenkunde kunde in bank.Kunden.OfType<Firmenkunde>())
@@ -126,22 +126,22 @@ namespace ProjektArbeit
                         string hsnr = werte[4];
                         int plz = int.Parse(werte[5]);
                         string ort = werte[6];
-                        int anzahlKonten = int.Parse(werte[7]);
-                        string bankName = werte[9];
-                        string vorname = werte[10];
-                        string nachname = werte[11];
-                        string telefonAp = werte[12];
+                        string bankName = werte[7];
+                        string vorname = werte[8];
+                        string nachname = werte[9];
+                        string telefonAp = werte[10];
                       //Finden der Bank durch den gespeicherten Namen
                         Bank bank = Bank.AlleBanken().FirstOrDefault(b => b.Name == bankName);
                       
-                        Firmenkunde fk = new Firmenkunde(name, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), anzahlKonten, bank, new Ansprechpartner(vorname, nachname, telefonAp));
-                        bank.Kunden.Add(fk);
+                        Firmenkunde fk = new Firmenkunde(name, telefonnummer, email, new Adresse(strasse, hsnr, plz, ort), 0, bank, new Ansprechpartner(vorname, nachname, telefonAp));
+                        Console.WriteLine($"Firmenkunde importiert mit der Kundennummer: {fk.Kundennummer}");
+
                     }
                 }
             }
             catch (Exception)
             {
-                Console.WriteLine("Fehler beim Laden der Privatkunden");
+                Console.WriteLine("Fehler beim Laden der Firmenkunden");
             }
         }
         public override string ToString()
